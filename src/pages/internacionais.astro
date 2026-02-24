@@ -1,0 +1,255 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import StarRating from '../components/StarRating.astro';
+import { getCollection } from 'astro:content';
+
+// Buscar destinos internacionais
+const allDestinos = await getCollection('destinos');
+// Filter more broadly to ensure we catch files in subdirectories
+const destinosInternacionais = allDestinos.filter(destino => 
+  destino.id.includes('internacionais/') || 
+  destino.slug.includes('internacionais/') ||
+  (destino.collection === 'destinos' && destino.id.includes('internacionais'))
+);
+
+// Mapear para o formato esperado pelo componente (opcional, ou usar direto)
+const ingressos = destinosInternacionais.map(destino => ({
+  id: destino.id,
+  titulo: destino.data.title,
+  subtitulo: destino.data.description,
+  categoria: "DESTINOS INTERNACIONAIS",
+  imagem: destino.data.featuredImage,
+  avaliacao: destino.data.rating || 5.0,
+  totalAvaliacoes: destino.data.reviewCount || 0,
+  preco: destino.data.price || 0,
+  slug: `destinos/internacionais/${destino.slug.replace(/^internacionais\//, '')}`,
+  duracao: destino.data.tripDates ? `${destino.data.tripDates.length} datas` : "Consulte",
+  tags: [
+    destino.data.location || "Mundo",
+    destino.data.isPromo ? "Promoção" : "Imperdível",
+    "Viagem Internacional"
+  ]
+}));
+---
+
+<BaseLayout 
+  title="Destinos Internacionais | Partiu Viagem"
+  description="Explore os melhores destinos internacionais com a Partiu Viagem. Pacotes incríveis para você conhecer o mundo."
+>
+  <Header />
+  
+  <main class="pt-20 lg:pt-24">
+    <!-- Hero Section -->
+    <section class="relative text-white py-24 lg:py-32">
+      <!-- Background Image with Fixed Position -->
+      <div class="absolute inset-0 z-0 bg-cover bg-center" style="background-image: url('/images/destinosinternacionais/uruguaifev2026/Dourado Fotografia Vale-Presente.png'); background-attachment: fixed;">
+        <div class="absolute inset-0 bg-black/40"></div>
+      </div>
+      <div class="container relative z-10 mx-auto px-4 text-center">
+        <div class="max-w-4xl mx-auto">
+          <h1 class="text-5xl lg:text-7xl font-bold mb-6 leading-tight">Destinos Internacionais</h1>
+          <p class="text-xl lg:text-2xl text-primary-100 mb-8 leading-relaxed">
+            Descubra o mundo com nossos pacotes exclusivos
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div class="flex items-center text-primary-100">
+              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              Roteiros exclusivos
+            </div>
+            <div class="flex items-center text-primary-100">
+              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              Melhor custo-benefício
+            </div>
+            <div class="flex items-center text-primary-100">
+              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              Guia especializado
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filtros -->
+    <section class="py-12 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+      <div class="container mx-auto px-4">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+          <div class="flex flex-col lg:flex-row justify-between items-center gap-6">
+            <div class="flex flex-wrap gap-3">
+              <button class="filter-btn active px-6 py-3 bg-primary-600 text-white rounded-full text-sm font-semibold hover:bg-primary-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5" data-filter="all">
+                <span class="flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+                  </svg>
+                  Todos ({ingressos.length})
+                </span>
+              </button>
+            </div>
+            
+            <div class="flex items-center gap-4">
+              <label for="sortSelect" class="text-sm font-medium text-gray-700 dark:text-gray-300">Ordenar:</label>
+              <select id="sortSelect" class="px-4 py-3 border border-gray-300 rounded-xl text-sm font-medium focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white shadow-md">
+                <option value="relevancia">Relevância</option>
+                <option value="menor-preco">Menor preço</option>
+                <option value="maior-preco">Maior preço</option>
+                <option value="melhor-avaliacao">Melhor avaliação</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Grid de Ingressos -->
+    <section class="py-20 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
+      <div class="container mx-auto px-4">
+        <div id="ingressos-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {ingressos.map((ingresso) => (
+            <div class="ingresso-card group bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100 dark:border-gray-700" data-category="destinos">
+              <div class="relative overflow-hidden">
+                <img 
+                  src={ingresso.imagem} 
+                  alt={ingresso.titulo}
+                  class="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div class="absolute top-4 left-4">
+                  <span class="bg-primary-600 text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg backdrop-blur-sm">
+                    {ingresso.categoria}
+                  </span>
+                </div>
+                <div class="absolute top-4 right-4">
+                  <div class="bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-lg">
+                    <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="p-6">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 line-clamp-2 group-hover:text-primary-600 transition-colors duration-300">
+                  {ingresso.titulo}
+                </h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">
+                  {ingresso.subtitulo}
+                </p>
+                
+                <div class="flex flex-col mb-6">
+                  <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">Nossos Clientes Recomendam:</p>
+                  <div class="flex items-center">
+                    <StarRating rating={ingresso.avaliacao} />
+                    <span class="ml-2 text-sm font-medium text-gray-600 dark:text-gray-400">
+                      {ingresso.avaliacao} ({ingresso.totalAvaliacoes} avaliações)
+                    </span>
+                  </div>
+                </div>
+                
+                <div class="space-y-3 mb-6">
+                  {ingresso.tags.map((tag) => (
+                    <div class="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                      <div class="w-2 h-2 bg-green-500 rounded-full mr-3 flex-shrink-0"></div>
+                      <span class="line-clamp-1">{tag}</span>
+                    </div>
+                  ))}
+                </div>
+                
+                <div class="border-t border-gray-100 dark:border-gray-700 pt-6">
+                  <div class="flex items-center justify-between mb-6">
+                    <div>
+                      <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">A partir de</p>
+                      <p class="text-3xl font-bold text-primary-600 dark:text-primary-400">
+                        R$ {ingresso.preco.toFixed(2).replace('.', ',')}
+                      </p>
+                      <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 flex items-center">
+                        <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                        </svg>
+                        Duração: {ingresso.duracao}
+                      </p>
+                    </div>
+                  </div>
+                  <a 
+                    href={`/${ingresso.slug}`}
+                    class="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 block text-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                  >
+                    <span class="flex items-center justify-center gap-2">
+                      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>
+                      </svg>
+                      VER DETALHES
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<script>
+  // Filtros
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Remove active de todos os botões
+      document.querySelectorAll('.filter-btn').forEach(b => {
+        b.classList.remove('bg-primary-600', 'text-white');
+        b.classList.add('bg-gray-200', 'text-gray-700', 'dark:bg-gray-700', 'dark:text-gray-300');
+      });
+      
+      // Adiciona active ao botão clicado
+      btn.classList.remove('bg-gray-200', 'text-gray-700', 'dark:bg-gray-700', 'dark:text-gray-300');
+      btn.classList.add('bg-primary-600', 'text-white');
+      
+      const filter = btn.dataset.filter;
+      const cards = document.querySelectorAll('.ingresso-card');
+      
+      cards.forEach(card => {
+        if (filter === 'all' || card.dataset.category === filter) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+  
+  // Ordenação
+  document.getElementById('sortSelect').addEventListener('change', (e) => {
+    const sortBy = e.target.value;
+    const grid = document.getElementById('ingressos-grid');
+    const cards = Array.from(grid.children);
+    
+    cards.sort((a, b) => {
+      const priceA = parseFloat(a.querySelector('.text-3xl').textContent.replace('R$ ', '').replace(',', '.'));
+      const priceB = parseFloat(b.querySelector('.text-3xl').textContent.replace('R$ ', '').replace(',', '.'));
+      
+      switch(sortBy) {
+        case 'menor-preco':
+          return priceA - priceB;
+        case 'maior-preco':
+          return priceB - priceA;
+        case 'melhor-avaliacao':
+          const ratingA = parseFloat(a.querySelector('.ml-2').textContent);
+          const ratingB = parseFloat(b.querySelector('.ml-2').textContent);
+          return ratingB - ratingA;
+        default:
+          return 0;
+      }
+    });
+    
+    cards.forEach(card => grid.appendChild(card));
+  });
+</script>

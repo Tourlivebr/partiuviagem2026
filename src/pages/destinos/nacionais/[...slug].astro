@@ -1,0 +1,133 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import StarRating from '../../../components/StarRating.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allDestinos = await getCollection('destinos');
+  const destinosNacionais = allDestinos.filter(destino => destino.id.startsWith('nacionais/'));
+  
+  return destinosNacionais.map(destino => {
+    // Strip 'nacionais/' prefix from slug to get clean URL
+    const cleanSlug = destino.slug.replace(/^nacionais\//, '');
+    return {
+      params: { slug: cleanSlug },
+      props: { destino },
+    };
+  });
+}
+
+const { destino } = Astro.props;
+const { Content } = await destino.render();
+
+const whatsappMessage = `Olá! Gostaria de mais informações sobre o destino ${destino.data.title}.`;
+const whatsappUrl = `https://wa.me/5554999184589?text=${encodeURIComponent(whatsappMessage)}`;
+---
+
+<BaseLayout 
+  title={`${destino.data.title} | Partiu Viagem`}
+  description={destino.data.description}
+>
+  <Header />
+  
+  <main class="pt-20 lg:pt-24">
+    <!-- Hero Section -->
+    <section class="relative h-96 lg:h-[500px] overflow-hidden">
+      <img 
+        src={destino.data.featuredImage} 
+        alt={destino.data.title}
+        class="w-full h-full object-cover"
+      />
+      <div class="absolute inset-0 bg-black/40"></div>
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="text-center text-white px-4 max-w-4xl">
+          <span class="inline-block px-3 py-1 bg-primary-600 text-white text-sm font-medium rounded-full mb-4">
+            {destino.data.isPromo ? "PROMOÇÃO" : "DESTINO NACIONAL"}
+          </span>
+          <h1 class="text-4xl lg:text-6xl font-bold mb-4">{destino.data.title}</h1>
+          <p class="text-xl lg:text-2xl text-gray-200">{destino.data.description}</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="container mx-auto px-4 py-12">
+      <div class="grid lg:grid-cols-3 gap-12">
+        <div class="lg:col-span-2">
+          <!-- Avaliações e Preço -->
+          <div class="flex flex-wrap items-center justify-between mb-8 p-6 bg-gray-50 dark:bg-gray-800 rounded-xl">
+            <div class="flex items-center space-x-4 mb-4 lg:mb-0">
+              <div class="flex flex-col">
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-1"><strong>Avaliação dos Viajantes:</strong></p>
+                <div class="flex items-center">
+                  <StarRating rating={destino.data.rating || 5} />
+                  <span class="text-gray-600 dark:text-gray-300 ml-2">({destino.data.reviewCount || 0} avaliações)</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-right">
+              <div class="text-gray-600 dark:text-gray-400 text-sm mb-1">A partir de:</div>
+              <div class="text-3xl font-bold text-primary-600">
+                {destino.data.currency || "R$"} {destino.data.price ? destino.data.price.toFixed(2).replace('.', ',') : "Consulte"}
+              </div>
+            </div>
+          </div>
+
+          <!-- Conteúdo MDX -->
+          <div class="mb-8 prose prose-lg max-w-none dark:prose-invert">
+            <Content />
+          </div>
+
+          <!-- Galeria de Imagens -->
+          {destino.data.galleryImages && destino.data.galleryImages.length > 0 && (
+            <div class="mb-8">
+              <h3 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Galeria de Fotos</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {destino.data.galleryImages.map((imagem, index) => (
+                  <div class="aspect-video overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-shadow cursor-pointer group">
+                    <img 
+                      src={imagem} 
+                      alt={`${destino.data.title} - Foto ${index + 1}`}
+                      class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        <!-- Sidebar de Reserva -->
+        <div class="lg:col-span-1">
+          <div class="sticky top-32">
+            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-lg">
+              <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Reserve Agora</h3>
+              <p class="text-gray-600 dark:text-gray-400 mb-6">
+                Garanta sua vaga para {destino.data.title} com as melhores condições.
+              </p>
+              
+              <a 
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="block w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg text-center transition-colors mb-4 flex items-center justify-center gap-2"
+              >
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-8.683-2.031-9.672-.272-.989-.471-1.138-.471-.249 0-1.238.173-1.611.52-2.106.347-.496.767-.743 1.015-.743.247 0 .495.001.717.001.223 0 .52.085.793.396.272.311.916 1.135.916 2.302s.619 2.228.718 2.524c.099.297 1.806 2.759 4.377 3.869 2.571 1.11 2.571.743 3.041.693.471-.05 1.511-.619 1.733-1.213.223-.594.223-1.115.149-1.213-.074-.099-.272-.149-.57-.297z"/>
+                </svg>
+                Falar no WhatsApp
+              </a>
+              
+              <div class="text-xs text-center text-gray-500 dark:text-gray-400">
+                Atendimento rápido e personalizado
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>

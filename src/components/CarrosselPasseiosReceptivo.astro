@@ -1,0 +1,381 @@
+---
+// Dados dos passeios e receptivo baseados na imagem
+const passeiosReceptivo = [
+  {
+    id: 1,
+    title: "Transfer Ida e Volta (POA ou Caxias/ Gramado ou Canela)",
+    subtitle: "Transporte Privativo",
+    category: "RECEPTIVO",
+    image: "/images/Transfer/Transfer.jpg",
+    rating: 4.95,
+    totalRatings: 127,
+    price: 700.00,
+    installments: "6x sem juros",
+    tags: ["Sem espera no embarque/desembarque", "Embarque imediato", "Privacidade total"]
+  },
+  {
+    id: 2,
+    title: "Tour Uva e Vinho + Passeio de Maria Fumaça + Epopeia + Almoço (Coletivo)",
+    subtitle: "Com Trem Maria Fumaça e Épopeia",
+    category: "PASSEIOS PRIVATIVOS",
+    image: "/images/maria-fumaca/fumaca01.jpg",
+    rating: 4.93,
+    totalRatings: 218,
+    price: 550.00,
+    installments: "6x sem juros",
+    tags: ["Passeio de Trem Maria Fumaça", "Degustação de vinhos e sucos", "Epopeia Italiana"]
+  },
+  {
+    id: 3,
+    title: "Ensaio Fotográfico Gramado e Canela",
+    subtitle: "Passeio Privativo",
+    category: "PASSEIOS PRIVATIVOS",
+    image: "/images/ensaios-fotograficos/ensaios.jpeg",
+    rating: 4.95,
+    totalRatings: 38,
+    price: 490.00,
+    installments: "6x sem juros",
+    tags: ["Com charme e romantismo", "Que a cidade oferece", "Preparamos o passeio fotográfico 'Gramado e Canela VIP'"]
+  }
+];
+---
+
+<section id="passeios-receptivo" class="py-16 bg-gradient-to-br from-neutral-50 to-primary-50 dark:from-primary-950 dark:to-primary-900">
+  <div class="container mx-auto px-4">
+    <!-- Header da Seção -->
+    <div class="text-center">
+      <div class="flex items-center justify-center mb-6">
+        <div class="h-px bg-gradient-to-r from-transparent via-primary-400 to-transparent flex-1 max-w-xs"></div>
+        <h2 class="text-3xl lg:text-4xl font-bold text-primary-900 dark:text-neutral-100 mx-8">
+          Passeios e <span class="text-secondary-500 dark:text-secondary-400">Receptivo</span>
+        </h2>
+        <div class="h-px bg-gradient-to-r from-transparent via-primary-400 to-transparent flex-1 max-w-xs"></div>
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="flex justify-center mb-8">
+      <div class="flex flex-wrap gap-2 justify-center">
+        <button id="filter-todos" class="filter-btn px-4 py-2 bg-primary-600 text-neutral-50 rounded-full text-sm font-medium hover:bg-primary-700 transition-colors" data-category="todos">
+          Todos
+        </button>
+        <button id="filter-receptivo" class="filter-btn px-4 py-2 bg-primary-100 text-primary-800 rounded-full text-sm font-medium hover:bg-primary-200 transition-colors dark:bg-primary-800 dark:text-primary-100" data-category="receptivo">
+          Receptivo
+        </button>
+        <button id="filter-passeios-privativos" class="filter-btn px-4 py-2 bg-primary-100 text-primary-800 rounded-full text-sm font-medium hover:bg-primary-200 transition-colors dark:bg-primary-800 dark:text-primary-100" data-category="passeios-privativos">
+          Passeios Privativos
+        </button>
+      </div>
+    </div>
+
+    <!-- Carrossel Container -->
+    <div class="relative">
+      <!-- Carrossel -->
+      <div class="overflow-hidden">
+        <div id="carousel-track-passeios-receptivo" class="flex transition-transform duration-500 ease-in-out">
+          {passeiosReceptivo.map((passeio) => (
+            <div class="flex-none w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 px-3">
+              <!-- Card -->
+              <div class="bg-neutral-50 dark:bg-primary-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group h-full flex flex-col border border-primary-100 dark:border-primary-700">
+                <!-- Imagem -->
+                <div class="relative h-48 overflow-hidden">
+                  <img 
+                    src={passeio.image} 
+                    alt={passeio.title}
+                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  <div class="absolute top-3 left-3">
+                    <span class="bg-secondary-500 text-primary-900 px-2 py-1 rounded-full text-xs font-bold shadow-sm">
+                      {passeio.category}
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Conteúdo -->
+                <div class="p-6 flex-1 flex flex-col">
+                  <!-- Título e Subtítulo -->
+                  <div class="mb-3">
+                    <h3 class="font-bold text-primary-900 dark:text-neutral-100 text-lg mb-1 group-hover:text-secondary-600 dark:group-hover:text-secondary-400 transition-colors">
+                      {passeio.title}
+                    </h3>
+                    <p class="text-primary-600 dark:text-neutral-400 text-sm">
+                      {passeio.subtitle}
+                    </p>
+                  </div>
+
+                  <!-- Rating -->
+                  <div class="flex flex-col mb-4">
+                    <p class="text-sm text-primary-600 dark:text-neutral-400 mb-1">Nossos Clientes Recomendam:</p>
+                    <div class="flex items-center gap-2">
+                      <div class="flex items-center">
+                        {Array.from({ length: 5 }, (_, i) => (
+                          <svg 
+                            class={`w-4 h-4 ${i < Math.floor(passeio.rating) ? 'text-secondary-400' : 'text-neutral-300 dark:text-neutral-600'}`}
+                            fill="currentColor" 
+                            viewBox="0 0 20 20"
+                          >
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                      </div>
+                      <span class="text-sm font-medium text-primary-700 dark:text-neutral-300">
+                        {passeio.rating} ({passeio.totalRatings} avaliações)
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- Tags -->
+                  <div class="mb-6 flex-1">
+                    <div class="space-y-2">
+                      {passeio.tags.map((tag) => (
+                        <div class="flex items-center text-sm text-primary-600 dark:text-neutral-400">
+                          <svg class="w-4 h-4 text-secondary-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                          </svg>
+                          {tag}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <!-- Preço e Botão -->
+                  <div class="mt-auto">
+                    <div class="flex items-center justify-between mb-4">
+                      <div>
+                        <p class="text-sm text-primary-500 dark:text-neutral-400">A partir de</p>
+                        <p class="text-2xl font-bold text-primary-700 dark:text-primary-400">
+                          R$ {passeio.price.toFixed(2).replace('.', ',')}
+                        </p>
+                        <p class="text-xs text-primary-500 dark:text-neutral-400">
+                          Pague em até {passeio.installments}
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <a 
+                      href={passeio.id === 1 ? '/transfer-privativo' : 
+                            passeio.id === 2 ? '/tour-trem-vinho-maria-fumaca' : 
+                            passeio.id === 3 ? '/ensaio-fotografico-gramado-canela' : '#'}
+                      class="w-full bg-secondary-500 hover:bg-secondary-600 text-primary-900 font-bold py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2 uppercase tracking-wide shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                    >
+                      COMPRAR AGORA
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Botões de Navegação -->
+      <button 
+        id="prev-btn-passeios-receptivo"
+        class="hidden sm:block absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-neutral-50 dark:bg-primary-700 shadow-lg rounded-full p-3 hover:bg-neutral-100 dark:hover:bg-primary-600 transition-colors z-10 text-primary-600 dark:text-neutral-200"
+        aria-label="Anterior"
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+      
+      <button 
+        id="next-btn-passeios-receptivo"
+        class="hidden sm:block absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-neutral-50 dark:bg-primary-700 shadow-lg rounded-full p-3 hover:bg-neutral-100 dark:hover:bg-primary-600 transition-colors z-10 text-primary-600 dark:text-neutral-200"
+        aria-label="Próximo"
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Indicadores -->
+    <div id="indicators-passeios-receptivo" class="flex justify-center mt-8 gap-2">
+      <!-- Indicadores serão gerados dinamicamente pelo JavaScript -->
+    </div>
+  </div>
+</section>
+
+<script>
+  // Código simplificado do carrossel de passeios e receptivo
+  let currentSlide = 0;
+  const carouselTrack = document.getElementById('carousel-track-passeios-receptivo');
+  const prevBtn = document.getElementById('prev-btn-passeios-receptivo');
+  const nextBtn = document.getElementById('next-btn-passeios-receptivo');
+  const indicatorsContainer = document.getElementById('indicators-passeios-receptivo');
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  
+  // Obter número total de passeios dinamicamente
+  let totalItems = carouselTrack.children.length;
+  let visibleItems = [...carouselTrack.children];
+  
+  // Inicializar filtros
+  function initFilters() {
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Atualizar estilo dos botões
+        filterButtons.forEach(btn => {
+          btn.classList.remove('bg-primary-600', 'text-white');
+          btn.classList.add('bg-gray-200', 'text-gray-700', 'dark:bg-gray-700', 'dark:text-gray-300');
+        });
+        
+        button.classList.remove('bg-gray-200', 'text-gray-700', 'dark:bg-gray-700', 'dark:text-gray-300');
+        button.classList.add('bg-primary-600', 'text-white');
+        
+        // Aplicar filtro
+        const category = button.getAttribute('data-category');
+        filterByCategory(category);
+      });
+    });
+  }
+  
+  // Filtrar passeios por categoria
+  function filterByCategory(category) {
+    const cards = carouselTrack.children;
+    
+    // Resetar visibilidade
+    visibleItems = [];
+    
+    for (let i = 0; i < cards.length; i++) {
+      const card = cards[i];
+      const cardCategory = card.querySelector('.bg-primary-600')?.textContent.trim().toUpperCase() || '';
+      
+      if (category === 'todos' || 
+          (category === 'receptivo' && cardCategory.includes('RECEPTIVO')) ||
+          (category === 'passeios-privativos' && cardCategory.includes('PASSEIOS PRIVATIVOS'))) {
+        card.style.display = '';
+        visibleItems.push(card);
+      } else {
+        card.style.display = 'none';
+      }
+    }
+    
+    // Atualizar carrossel
+    currentSlide = 0;
+    totalItems = visibleItems.length;
+    updateCarousel();
+  }
+  
+  // Calcular slides por visualização baseado na tela
+  function getSlidesPerView() {
+    const width = window.innerWidth;
+    if (width >= 1280) return 4; // xl: 4 cards
+    if (width >= 1024) return 3; // lg: 3 cards
+    if (width >= 640) return 2;  // sm: 2 cards
+    return 1; // mobile: 1 card
+  }
+  
+  // Calcular total de slides necessários
+  function getTotalSlides() {
+    const slidesPerView = getSlidesPerView();
+    return Math.max(1, Math.ceil(visibleItems.length - slidesPerView + 1));
+  }
+  
+  // Atualizar posição do carrossel
+  function updateCarousel() {
+    const slidesPerView = getSlidesPerView();
+    const slideWidth = 100 / slidesPerView;
+    const translateX = -currentSlide * slideWidth;
+    
+    carouselTrack.style.transform = `translateX(${translateX}%)`;
+    updateIndicators();
+  }
+  
+  // Atualizar indicadores
+  function updateIndicators() {
+    const totalSlides = getTotalSlides();
+    
+    // Limpar indicadores existentes
+    indicatorsContainer.innerHTML = '';
+    
+    // Criar novos indicadores
+    for (let i = 0; i < totalSlides; i++) {
+      const indicator = document.createElement('button');
+      indicator.className = `w-3 h-3 rounded-full transition-colors ${
+        i === currentSlide ? 'bg-primary-600' : 'bg-gray-300 dark:bg-gray-600'
+      }`;
+      indicator.addEventListener('click', () => {
+        currentSlide = i;
+        updateCarousel();
+      });
+      indicatorsContainer.appendChild(indicator);
+    }
+  }
+  
+  // Próximo slide
+  function nextSlide() {
+    const totalSlides = getTotalSlides();
+    currentSlide = (currentSlide + 1) % totalSlides;
+    updateCarousel();
+  }
+  
+  // Slide anterior
+  function prevSlide() {
+    const totalSlides = getTotalSlides();
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+    updateCarousel();
+  }
+  
+  // Event listeners
+  nextBtn?.addEventListener('click', nextSlide);
+  prevBtn?.addEventListener('click', prevSlide);
+  
+  // Suporte a touch/swipe no mobile
+  let startX = 0;
+  let isDragging = false;
+  
+  carouselTrack.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+    isDragging = true;
+  });
+  
+  carouselTrack.addEventListener('touchend', (e) => {
+    if (!isDragging) return;
+    
+    const endX = e.changedTouches[0].clientX;
+    const diffX = startX - endX;
+    
+    // Se o movimento foi significativo (mais de 50px)
+    if (Math.abs(diffX) > 50) {
+      if (diffX > 0) {
+        nextSlide(); // Swipe para esquerda = próximo
+      } else {
+        prevSlide(); // Swipe para direita = anterior
+      }
+    }
+    
+    isDragging = false;
+  });
+  
+  // Auto-play (opcional)
+  let autoPlayInterval;
+  
+  function startAutoPlay() {
+    autoPlayInterval = setInterval(nextSlide, 5000);
+  }
+  
+  function stopAutoPlay() {
+    clearInterval(autoPlayInterval);
+  }
+  
+  // Pausar auto-play durante interação
+  carouselTrack.addEventListener('mouseenter', stopAutoPlay);
+  carouselTrack.addEventListener('mouseleave', startAutoPlay);
+  carouselTrack.addEventListener('touchstart', stopAutoPlay);
+  carouselTrack.addEventListener('touchend', () => {
+    setTimeout(startAutoPlay, 3000);
+  });
+  
+  // Atualizar no redimensionamento da tela
+  window.addEventListener('resize', () => {
+    currentSlide = 0; // Reset para o primeiro slide
+    updateCarousel();
+  });
+  
+  // Inicializar carrossel e filtros
+  initFilters();
+  updateCarousel();
+  startAutoPlay();
+</script>

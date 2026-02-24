@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import HeroModerno from '../components/HeroModerno.astro';
+import CarrosselDestinos from '../components/CarrosselDestinos.astro';
+import CarrosselDestinosInternacionais from '../components/CarrosselDestinosInternacionais.astro';
+import Depoimentos from '../components/Depoimentos.astro';
+import FormularioContato from '../components/FormularioContato.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout title="Partiu Viagem - Destinos Nacionais">
+  <Header />
+  
+  <!-- Seção Hero -->
+  <HeroModerno />
+  
+  <!-- Seção de Destinos Nacionais -->
+  <section id="destinos">
+    <CarrosselDestinos />
+  </section>
+
+  <!-- Seção de Destinos Internacionais -->
+  <section id="destinos-internacionais">
+    <CarrosselDestinosInternacionais />
+  </section>
+  
+  <!-- Seção Depoimentos -->
+  <section id="depoimentos">
+    <Depoimentos />
+  </section>
+  
+  <!-- Seção Contato -->
+  <section id="contato">
+    <FormularioContato />
+  </section>
+  
+  <!-- Footer -->
+  <Footer />
+</BaseLayout>

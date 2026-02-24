@@ -1,0 +1,322 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import StarRating from '../components/StarRating.astro';
+
+const passeio = {
+  titulo: "Ensaio Fotográfico Gramado e Canela",
+  subtitulo: "Passeio Privativo",
+  categoria: "PASSEIOS PRIVATIVOS",
+  preco: 490.00,
+  avaliacao: 4.95,
+  totalAvaliacoes: 38,
+  parcelas: "6x sem juros",
+  descricao: "ENSAIO FOTOGRÁFICO é um passeio diferenciado com fotógrafo profissional e contempla um BOOK fotográfico especial para você. Aproveitando todo o charme e romantismo que as cidades oferecem, preparamos o passeio fotográfico 'Gramado e Canela VIP' com motorista/fotógrafo em carro privado. Torne sua viagem e a recordação inesquecível...",
+  inclusos: [
+    "Transporte ida e volta",
+    "Acompanhamento de motorista fotógrafo",
+    "Álbum DISPOSITIVO com aproximadamente 250 fotos",
+    "Roteiro personalizado conforme combinado"
+  ],
+  naoInclusos: [
+    "Almoço e outras refeições",
+    "Ingressos em locais visitados"
+  ],
+  duracao: "Aproximadamente 04 a 05 horas",
+  horarios: ["Saída às 09h - Retorno às 14h"],
+  galeria: [
+    "/images/ensaios-fotograficos/ensaios.jpeg",
+    "/images/ensaios-fotograficos/ensaios.jpeg",
+    "/images/ensaios-fotograficos/ensaios.jpeg",
+    "/images/ensaios-fotograficos/ensaios.jpeg",
+    "/images/ensaios-fotograficos/ensaios.jpeg",
+    "/images/ensaios-fotograficos/ensaios.jpeg"
+  ],
+  tags: [
+    "Com charme e romantismo",
+    "Que a cidade oferece",
+    "Preparamos o passeio fotográfico 'Gramado e Canela VIP'",
+    "Fotógrafo profissional",
+    "Book fotográfico especial",
+    "Carro privado"
+  ],
+  roteiro: [
+    "Fonte do Amor",
+    "Lago Negro",
+    "Rua Torta",
+    "Largo da Igreja de Gramado",
+    "Rua Coberta e Palácio dos festivais",
+    "Gabine vermelho telefone Londrino",
+    "Pórtico de entrada da cidade",
+    "Fachada do Mundo a Vapor",
+    "Castelinho do Caracol",
+    "Igreja de Pedra e centro de Canela"
+  ],
+  observacoes: [
+    "O passeio acima é privativo, ou seja, o valor é correspondente ao serviço em Van ou Carro contratado.",
+    "O carro da agência buscará e deixará os passageiros em 'locais centrais' nos hotéis, pousadas e residências de Gramado, Canela.",
+    "Os roteiros e datas poderão sofrer alteração ou cancelamentos devido a condições climáticas, atendimento dos locais ou fatores de força maior."
+  ]
+};
+
+const whatsappMessage = `Olá! Gostaria de mais informações sobre o ${passeio.titulo}. Valor: R$ ${passeio.preco.toFixed(2).replace('.', ',')} em ${passeio.parcelas}.`;
+const whatsappUrl = `https://wa.me/5554981354672?text=${encodeURIComponent(whatsappMessage)}`;
+---
+
+<BaseLayout 
+  title={`${passeio.titulo} | Motorista Partiu Viagem`}
+  description={passeio.descricao}
+>
+  <Header />
+  
+  <main class="pt-20 lg:pt-24">
+    <!-- Hero Section -->
+    <section class="relative h-96 lg:h-[500px] overflow-hidden" style={`background-image: url('${passeio.galeria[0]}'); background-attachment: fixed; background-size: cover; background-position: center; background-repeat: no-repeat;`}>
+      <div class="absolute inset-0 bg-black/40"></div>
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="text-center text-white px-4">
+          <span class="inline-block px-3 py-1 bg-primary-600 text-white text-sm font-medium rounded-full mb-4">
+            {passeio.categoria}
+          </span>
+          <h1 class="text-3xl lg:text-5xl font-bold mb-4">{passeio.titulo}</h1>
+          <p class="text-xl lg:text-2xl text-gray-200">{passeio.subtitulo}</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="container mx-auto px-4 py-12">
+      <div class="grid lg:grid-cols-3 gap-12">
+        <div class="lg:col-span-2">
+          <!-- Avaliações e Preço -->
+          <div class="flex flex-wrap items-center justify-between mb-8 p-6 bg-gray-50 rounded-xl">
+            <div class="flex items-center space-x-4 mb-4 lg:mb-0">
+              <StarRating rating={passeio.avaliacao} />
+              <span class="text-gray-600">({passeio.totalAvaliacoes} avaliações)</span>
+            </div>
+            <div class="text-right">
+              <div class="text-gray-600 text-sm mb-1">A partir de:</div>
+              <div class="text-3xl font-bold text-primary-600">R$ {passeio.preco.toFixed(2).replace('.', ',')}</div>
+            </div>
+          </div>
+
+          <!-- Descrição -->
+          <div class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Sobre este passeio</h2>
+            <p class="text-gray-700 leading-relaxed mb-4">{passeio.descricao}</p>
+          </div>
+
+          <!-- Nota Importante -->
+          <div class="mb-8 bg-yellow-50 p-6 rounded-xl">
+            <h3 class="text-xl font-bold mb-4 text-yellow-800">Nota Importante</h3>
+            <div class="text-yellow-700 space-y-2">
+              <p>Consulte a disponibilidade do fotógrafo e agende seu dia de passeio para seu book fotográfico.</p>
+              <p class="font-semibold">Agende seu dia de passeio pelo WhatsApp: <a href="https://wa.me/5554993723094" class="text-blue-600 hover:underline">54 993723094</a></p>
+            </div>
+          </div>
+
+          <!-- Roteiro Sugerido -->
+          <div class="mb-8">
+            <h3 class="text-xl font-bold mb-4">Roteiro Sugerido - Gramado e Canela</h3>
+            <div class="grid md:grid-cols-2 gap-4">
+              {passeio.roteiro.map(local => (
+                <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                  <svg class="w-5 h-5 text-primary-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span class="text-gray-700">{local}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Duração do Passeio -->
+          <div class="mb-8">
+            <h3 class="text-xl font-bold mb-4">Duração e Horários</h3>
+            <div class="bg-blue-50 p-6 rounded-xl">
+              <ul class="space-y-2 text-blue-700">
+                <li class="flex items-center space-x-2">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span>Duração: {passeio.duracao}</span>
+                </li>
+                <li class="flex items-center space-x-2">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span>Saída do hotel às 09h e retorno previsto às 14h</span>
+                </li>
+                <li class="flex items-center space-x-2">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span>Saída e retorno do hotel, pousada ou residência em locais centrais</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- O que está incluso -->
+          <div class="mb-8">
+            <h3 class="text-xl font-bold mb-4">O passeio inclui</h3>
+            <ul class="space-y-3">
+              {passeio.inclusos.map(item => (
+                <li class="flex items-start space-x-3">
+                  <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span class="text-gray-700">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- O que não está incluso -->
+          <div class="mb-8">
+            <h3 class="text-xl font-bold mb-4">O passeio não inclui</h3>
+            <ul class="space-y-3">
+              {passeio.naoInclusos.map(item => (
+                <li class="flex items-start space-x-3">
+                  <svg class="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span class="text-gray-700">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Tags -->
+          <div class="mb-8">
+            <h3 class="text-xl font-bold mb-4">Destaques</h3>
+            <div class="flex flex-wrap gap-2">
+              {passeio.tags.map(tag => (
+                <span class="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <!-- Galeria de Imagens -->
+          <div class="mb-8">
+            <h3 class="text-xl font-bold mb-4">Galeria</h3>
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+              {passeio.galeria.map((imagem, index) => (
+                <div class="aspect-square overflow-hidden rounded-lg cursor-pointer hover:opacity-80 transition-opacity">
+                  <img 
+                    src={imagem} 
+                    alt={`${passeio.titulo} - Imagem ${index + 1}`}
+                    class="w-full h-full object-cover"
+                    onclick={`openModal('${imagem}')`}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Observações Importantes -->
+          <div class="mb-8 bg-yellow-50 p-6 rounded-xl">
+            <h3 class="text-xl font-bold mb-4 text-yellow-800">Observações Importantes</h3>
+            <ul class="space-y-2 text-yellow-700">
+              {passeio.observacoes.map(obs => (
+                <li class="flex items-start space-x-2">
+                  <svg class="w-5 h-5 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span>{obs}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <!-- Sidebar de Reserva -->
+        <div class="lg:col-span-1">
+          <div class="bg-white rounded-xl shadow-lg p-6 sticky top-24">
+            <div class="text-center mb-6">
+              <div class="text-gray-600 text-sm mb-1">A partir de:</div>
+              <div class="text-3xl font-bold text-primary-600 mb-2">R$ {passeio.preco.toFixed(2).replace('.', ',')}</div>
+              <div class="text-gray-500 text-sm">Pague em {passeio.parcelas}</div>
+              
+              <div class="mt-4 p-3 bg-gray-50 rounded-lg">
+                <div class="flex flex-col">
+                  <p class="text-sm text-gray-600 dark:text-gray-400 mb-1"><strong>Nossos Clientes Recomendam:</strong></p>
+                  <div class="flex items-center">
+                    <StarRating rating={passeio.avaliacao} />
+                    <div class="text-sm text-gray-600 ml-2">
+                      {passeio.avaliacao} de 5 ({passeio.totalAvaliacoes} avaliações)
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Informações do Passeio -->
+            <div class="space-y-4 mb-6">
+              <div class="flex justify-between">
+                <span class="text-gray-600">Duração:</span>
+                <span class="font-medium">{passeio.duracao}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-600">Categoria:</span>
+                <span class="font-medium">{passeio.categoria}</span>
+              </div>
+            </div>
+
+            <!-- Botão de Reserva via WhatsApp -->
+            <a 
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2"
+            >
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+              </svg>
+              <span>Reservar via WhatsApp</span>
+            </a>
+
+            <div class="text-center mt-4">
+              <p class="text-sm text-gray-600">Resposta rápida garantida!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<!-- Modal para visualização de imagens -->
+<div id="imageModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden flex items-center justify-center p-4" onclick="closeModal()">
+  <div class="max-w-4xl max-h-full">
+    <img id="modalImage" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg" onclick="event.stopPropagation()">
+  </div>
+  <button onclick="closeModal()" class="absolute top-4 right-4 text-white text-4xl hover:text-gray-300">&times;</button>
+</div>
+
+<script>
+  function openModal(imageSrc) {
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    modalImage.src = imageSrc;
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('imageModal');
+    modal.classList.add('hidden');
+    document.body.style.overflow = 'auto';
+  }
+
+  // Fechar modal com ESC
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closeModal();
+    }
+  });
+</script>

@@ -1,0 +1,490 @@
+---
+// Remover todo o array todosPasseios daqui - agora será definido no JavaScript
+---
+
+<header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/90 dark:bg-neutral-900/90 backdrop-blur-md border-b border-neutral-200/30 dark:border-neutral-700/30 group group-[.scrolled]:bg-secondary-500 lg:group-[.scrolled]:bg-white/90 lg:group-[.scrolled]:dark:bg-neutral-900/90">
+  <div class="container mx-auto px-4">
+    <nav class="flex items-center justify-between h-20 lg:h-24 group-[.scrolled]:hidden lg:group-[.scrolled]:flex transition-all duration-300" aria-label="Navegação principal">
+      <!-- Logo -->
+      <a href="/" class="flex items-center space-x-3 group" aria-label="Página inicial">
+        <img 
+          src="/images/logopartiuviagem.png" 
+          alt="Partiu Viagem - Agência de turismo e receptivo" 
+          class="h-20 w-auto lg:h-24 transition-transform group-hover:scale-105 object-contain"
+          width="220"
+          height="220"
+        />
+      </a>
+      
+      <!-- Search Bar - Desktop -->
+      <div class="hidden lg:flex flex-1 max-w-md mx-4 relative">
+        <div class="relative w-full">
+          <input 
+            type="text" 
+            id="search-input"
+            placeholder="Buscar passeios..."
+            class="w-full pl-8 pr-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+            autocomplete="off"
+          />
+          <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+            <svg class="h-5 w-5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </div>
+          
+          <!-- Search Results Dropdown -->
+          <div id="search-results" class="absolute top-full left-0 right-0 mt-1 bg-white border border-neutral-200 rounded-lg shadow-lg max-h-80 overflow-y-auto hidden z-50">
+            <!-- Results will be populated by JavaScript -->
+          </div>
+        </div>
+      </div>
+      
+      <!-- Desktop Menu -->
+      <ul class="hidden md:flex items-center space-x-6" role="menubar">
+        <li role="none">
+          <a 
+            href="https://www.facebook.com/PartiuViagemTurismo" 
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-primary-900 dark:text-neutral-100 hover:text-secondary-600 dark:hover:text-secondary-400 font-medium transition-colors duration-200"
+            role="menuitem"
+          >
+            Blog
+          </a>
+        </li>
+        <li role="none" class="relative group">
+          <button 
+            class="text-primary-900 dark:text-neutral-100 hover:text-secondary-600 dark:hover:text-secondary-400 font-medium transition-colors duration-200 flex items-center"
+            role="menuitem"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Destinos
+            <svg class="w-4 h-4 ml-1 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <!-- Dropdown Menu -->
+          <div class="absolute top-full left-0 mt-2 w-64 bg-white dark:bg-neutral-800 rounded-lg shadow-xl border border-neutral-200 dark:border-neutral-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+            <div class="py-2">
+              <a href="/ingressos" class="block px-4 py-3 text-primary-900 dark:text-neutral-100 hover:bg-neutral-50 dark:hover:bg-neutral-700 hover:text-primary-600 transition-colors">
+                <div class="font-medium">Destinos Nacionais</div>
+                <div class="text-sm text-neutral-500 dark:text-neutral-400">Pacotes e Roteiros</div>
+              </a>
+              <a href="/internacionais" class="block px-4 py-3 text-primary-900 dark:text-neutral-100 hover:bg-neutral-50 dark:hover:bg-neutral-700 hover:text-primary-600 transition-colors">
+                <div class="font-medium">Destinos Internacionais</div>
+                <div class="text-sm text-neutral-500 dark:text-neutral-400">Pacotes e Roteiros</div>
+              </a>
+              <a href="/passeios" class="block px-4 py-3 text-primary-900 dark:text-neutral-100 hover:bg-neutral-50 dark:hover:bg-neutral-700 hover:text-primary-600 transition-colors">
+                <div class="font-medium">Passeios e Receptivo</div>
+                <div class="text-sm text-neutral-500 dark:text-neutral-400">Tours personalizados</div>
+              </a>
+            </div>
+          </div>
+        </li>
+        <li role="none">
+          <a 
+            href="#depoimentos" 
+            class="text-primary-900 dark:text-neutral-100 hover:text-secondary-600 dark:hover:text-secondary-400 font-medium transition-colors duration-200 scroll-smooth"
+            role="menuitem"
+          >
+            Depoimentos
+          </a>
+        </li>
+        <li role="none">
+          <a 
+            href="#contato" 
+            class="text-primary-800 dark:text-neutral-300 hover:text-secondary-600 dark:hover:text-primary-400 font-medium transition-colors duration-200 scroll-smooth"
+            role="menuitem"
+          >
+            Contato
+          </a>
+        </li>
+      </ul>
+      
+      <!-- Mobile Controls -->
+      <div class="md:hidden flex items-center space-x-2">
+        <!-- Mobile Search Button -->
+        <button 
+          id="mobile-search-button"
+          class="p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+          aria-label="Abrir busca"
+        >
+          <svg class="w-6 h-6 text-primary-700 dark:text-neutral-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+        </button>
+        
+        <!-- Mobile Menu Button -->
+        <button 
+          id="mobile-menu-button"
+          class="p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+          aria-label="Abrir menu de navegação"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+        >
+          <svg class="w-6 h-6 text-primary-700 dark:text-neutral-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+      </button>
+    </nav>
+    
+    <!-- Mobile Scrolled Header -->
+    <div class="hidden group-[.scrolled]:flex lg:group-[.scrolled]:hidden lg:hidden items-center justify-between h-16 w-full gap-4" aria-label="Navegação mobile reduzida">
+      <!-- Mobile Menu Button (Scrolled) -->
+      <button 
+        id="mobile-menu-button-scrolled"
+        class="p-2 -ml-2 rounded-lg hover:bg-white/20 text-secondary-900 transition-colors"
+        aria-label="Abrir menu de navegação"
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+
+      <!-- Search Input (Yellow Background) -->
+      <div class="flex-1 relative">
+        <input 
+          type="text" 
+          id="search-input-scrolled"
+          placeholder="Buscar passeios..."
+          class="w-full pl-4 pr-10 py-2 bg-yellow-400 text-secondary-900 placeholder-secondary-800/70 border-none rounded-lg focus:ring-2 focus:ring-white focus:outline-none text-sm font-medium shadow-sm"
+          autocomplete="off"
+        />
+        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+          <svg class="h-5 w-5 text-secondary-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+        </div>
+        
+        <!-- Search Results Dropdown (Scrolled) -->
+        <div id="search-results-scrolled" class="absolute top-full left-0 right-0 mt-2 bg-white border border-neutral-200 rounded-lg shadow-xl max-h-80 overflow-y-auto hidden z-50 text-left">
+          <!-- Results will be populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mobile Search Bar -->
+    <div id="mobile-search" class="lg:hidden hidden px-4 pb-4">
+      <div class="relative">
+        <input 
+          type="text" 
+          id="mobile-search-input"
+          placeholder="Buscar passeios..."
+          class="w-full pl-8 pr-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+          autocomplete="off"
+        />
+        <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+          <svg class="h-5 w-5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+        </div>
+        
+        <!-- Mobile Search Results -->
+        <div id="mobile-search-results" class="absolute top-full left-0 right-0 mt-1 bg-neutral-50 border border-neutral-200 rounded-lg shadow-lg max-h-60 overflow-y-auto hidden z-50">
+          <!-- Results will be populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-neutral-200">
+      <div class="px-4 py-4 space-y-4">
+        <!-- Blog -->
+        <a href="https://www.facebook.com/PartiuViagemTurismo" target="_blank" rel="noopener noreferrer" class="block text-primary-800 hover:text-primary-600 transition-colors font-medium mobile-menu-link">Blog</a>
+        
+        <!-- Mobile Services Dropdown -->
+        <div class="space-y-2">
+          <button id="mobile-services-toggle" class="flex items-center justify-between w-full text-primary-800 hover:text-primary-600 transition-colors font-medium">
+            Destinos
+            <svg class="w-4 h-4 transition-transform text-primary-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div id="mobile-services-menu" class="hidden pl-4 space-y-2">
+            <a href="/ingressos" class="block text-primary-600 hover:text-primary-800 transition-colors mobile-menu-link">Destinos Nacionais</a>
+            <a href="/internacionais" class="block text-primary-600 hover:text-primary-800 transition-colors mobile-menu-link">Destinos Internacionais</a>
+            <a href="/passeios" class="block text-primary-600 hover:text-primary-800 transition-colors mobile-menu-link">Passeios e Receptivo</a>
+          </div>
+        </div>
+        
+        <a href="#depoimentos" class="block text-primary-800 hover:text-primary-600 transition-colors font-medium mobile-menu-link">Depoimentos</a>
+        <a href="#contato" class="block text-primary-800 hover:text-primary-600 transition-colors font-medium mobile-menu-link">Contato</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Dados dos passeios para busca (agora definido diretamente no JavaScript)
+  const todosPasseios = [
+    // Passeios e Receptivo - apenas os 3 da imagem
+    {
+      id: 5,
+      titulo: "Transfer Ida e Volta (POA ou Caxias/ Gramado ou Canela)",
+      subtitulo: "Transporte Privativo",
+      categoria: "RECEPTIVO",
+      tipo: "passeios",
+      slug: "transfer-privativo"
+    },
+    {
+      id: 6,
+      titulo: "Tour Uva e Vinho + Passeio de Maria Fumaça + Epopeia + Almoço (Coletivo)",
+      subtitulo: "Com Trem Maria Fumaça e Épopeia",
+      categoria: "PASSEIOS",
+      tipo: "passeios",
+      slug: "tour-trem-vinho-maria-fumaca"
+    },
+    {
+      id: 14,
+      titulo: "Ensaio Fotográfico Gramado e Canela",
+      subtitulo: "Passeio Privativo",
+      categoria: "PASSEIOS PRIVATIVOS",
+      tipo: "passeios",
+      slug: "ensaio-fotografico-gramado-canela"
+    }
+  ];
+
+  // Header scroll behavior
+  const header = document.getElementById('header');
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
+  const mobileServicesToggle = document.getElementById('mobile-services-toggle');
+  const mobileServicesMenu = document.getElementById('mobile-services-menu');
+  const mobileSearchButton = document.getElementById('mobile-search-button');
+  const mobileSearch = document.getElementById('mobile-search');
+  const searchInput = document.getElementById('search-input');
+  const mobileSearchInput = document.getElementById('mobile-search-input');
+  const searchResults = document.getElementById('search-results');
+  const mobileSearchResults = document.getElementById('mobile-search-results');
+
+  // Scrolled Header Elements
+  const mobileMenuButtonScrolled = document.getElementById('mobile-menu-button-scrolled');
+  const searchInputScrolled = document.getElementById('search-input-scrolled');
+  const searchResultsScrolled = document.getElementById('search-results-scrolled');
+  
+  let isMenuOpen = false;
+  let isServicesOpen = false;
+  let isMobileSearchOpen = false;
+  
+  // Search functionality
+  function performSearch(query, resultsContainer) {
+    console.log('Performing search for:', query); // Debug
+    
+    if (!query.trim()) {
+      resultsContainer.classList.add('hidden');
+      return;
+    }
+    
+    const filteredPasseios = todosPasseios.filter(passeio => 
+      passeio.titulo.toLowerCase().includes(query.toLowerCase()) ||
+      (passeio.subtitulo && passeio.subtitulo.toLowerCase().includes(query.toLowerCase()))
+    );
+    
+    console.log('Filtered results:', filteredPasseios); // Debug
+    
+    if (filteredPasseios.length === 0) {
+      resultsContainer.innerHTML = `
+        <div class="p-4 text-gray-500 text-center">
+          Nenhum passeio encontrado para "${query}"
+        </div>
+      `;
+    } else {
+      resultsContainer.innerHTML = filteredPasseios.map(passeio => {
+        // Para descontos especiais, usar o link externo
+        if (passeio.tipo === 'descontos' && passeio.link) {
+          return `
+            <a href="${passeio.link}" target="_blank" class="block p-3 hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0">
+              <div class="font-medium text-gray-800">${passeio.titulo}</div>
+              <div class="text-sm text-gray-600">${passeio.subtitulo || ''}</div>
+              <div class="text-xs text-blue-600 mt-1">${passeio.categoria}</div>
+            </a>
+          `;
+        } else {
+          // Para outros tipos, usar o slug interno
+          const href = `/${passeio.slug}`;
+          return `
+            <a href="${href}" class="block p-3 hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0">
+              <div class="font-medium text-gray-800">${passeio.titulo}</div>
+              <div class="text-sm text-gray-600">${passeio.subtitulo || ''}</div>
+              <div class="text-xs text-blue-600 mt-1">${passeio.categoria}</div>
+            </a>
+          `;
+        }
+      }).join('');
+    }
+    
+    resultsContainer.classList.remove('hidden');
+  }
+  
+  // Desktop search
+  searchInput?.addEventListener('input', (e) => {
+    performSearch(e.target.value, searchResults);
+  });
+  
+  // Mobile search
+  mobileSearchInput?.addEventListener('input', (e) => {
+    performSearch(e.target.value, mobileSearchResults);
+  });
+  
+  // Hide search results when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#search-input') && !e.target.closest('#search-results')) {
+      searchResults?.classList.add('hidden');
+    }
+    if (!e.target.closest('#mobile-search-input') && !e.target.closest('#mobile-search-results')) {
+      mobileSearchResults?.classList.add('hidden');
+    }
+  });
+  
+  // Mobile search toggle
+  mobileSearchButton?.addEventListener('click', () => {
+    isMobileSearchOpen = !isMobileSearchOpen;
+    
+    if (isMobileSearchOpen) {
+      mobileSearch?.classList.remove('hidden');
+      mobileSearchInput?.focus();
+    } else {
+      mobileSearch?.classList.add('hidden');
+      mobileSearchResults?.classList.add('hidden');
+    }
+  });
+
+  // Scrolled Header Listeners
+  mobileMenuButtonScrolled?.addEventListener('click', () => {
+    isMenuOpen = !isMenuOpen;
+    
+    if (isMenuOpen) {
+      mobileMenu?.classList.remove('hidden');
+      mobileMenuButton?.setAttribute('aria-expanded', 'true');
+    } else {
+      mobileMenu?.classList.add('hidden');
+      mobileMenuButton?.setAttribute('aria-expanded', 'false');
+      isServicesOpen = false;
+      mobileServicesMenu?.classList.add('hidden');
+      const arrow = mobileServicesToggle?.querySelector('svg');
+      arrow?.classList.remove('rotate-180');
+    }
+  });
+
+  searchInputScrolled?.addEventListener('input', (e) => {
+    performSearch(e.target.value, searchResultsScrolled);
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#search-input-scrolled') && !e.target.closest('#search-results-scrolled')) {
+      searchResultsScrolled?.classList.add('hidden');
+    }
+  });
+  
+  // Scroll behavior
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 0) {
+      header?.classList.add('scrolled');
+    } else {
+      header?.classList.remove('scrolled');
+    }
+  });
+
+  // Placeholder rotation logic
+  const placeholders = [
+    "Buscar passeios...",
+    "Pesquise Excursões aqui!...",
+    "Fale com nosso suporte....",
+    "Excursões internacionais, Atacama, Uruguai...",
+    "Passeios nacionais... Cristo, Uva, Malharias..."
+  ];
+  
+  let currentPlaceholderIndex = 0;
+  
+  function rotatePlaceholders() {
+    currentPlaceholderIndex = (currentPlaceholderIndex + 1) % placeholders.length;
+    const newPlaceholder = placeholders[currentPlaceholderIndex];
+    
+    // Update mobile search inputs
+    if (mobileSearchInput) mobileSearchInput.placeholder = newPlaceholder;
+    if (searchInputScrolled) searchInputScrolled.placeholder = newPlaceholder;
+  }
+  
+  // Rotate every 3 seconds
+  setInterval(rotatePlaceholders, 3000);
+  
+  // Mobile menu toggle
+  mobileMenuButton?.addEventListener('click', () => {
+    isMenuOpen = !isMenuOpen;
+    
+    if (isMenuOpen) {
+      mobileMenu?.classList.remove('hidden');
+      mobileMenuButton?.setAttribute('aria-expanded', 'true');
+    } else {
+      mobileMenu?.classList.add('hidden');
+      mobileMenuButton?.setAttribute('aria-expanded', 'false');
+      // Reset services menu when closing main menu
+      isServicesOpen = false;
+      mobileServicesMenu?.classList.add('hidden');
+      const arrow = mobileServicesToggle?.querySelector('svg');
+      arrow?.classList.remove('rotate-180');
+    }
+  });
+  
+  // Mobile services dropdown toggle
+  mobileServicesToggle?.addEventListener('click', () => {
+    isServicesOpen = !isServicesOpen;
+    const arrow = mobileServicesToggle.querySelector('svg');
+    
+    if (isServicesOpen) {
+      mobileServicesMenu?.classList.remove('hidden');
+      arrow?.classList.add('rotate-180');
+    } else {
+      mobileServicesMenu?.classList.add('hidden');
+      arrow?.classList.remove('rotate-180');
+    }
+  });
+  
+  // Close mobile menu when clicking on links
+  mobileMenuLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      isMenuOpen = false;
+      isServicesOpen = false;
+      mobileMenu?.classList.add('hidden');
+      mobileServicesMenu?.classList.add('hidden');
+      mobileMenuButton?.setAttribute('aria-expanded', 'false');
+      const arrow = mobileServicesToggle?.querySelector('svg');
+      arrow?.classList.remove('rotate-180');
+    });
+  });
+  
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      
+      const href = this instanceof HTMLElement ? this.getAttribute('href') : null;
+      const target = href ? document.querySelector(href) : null;
+      
+      if (target) {
+        const headerElement = document.getElementById('header');
+        const headerHeight = headerElement?.offsetHeight || 0;
+        const targetPosition = target.offsetTop - headerHeight - 20;
+        
+        window.scrollTo({
+          top: Math.max(0, targetPosition),
+          behavior: 'smooth'
+        });
+        
+        // Hide search results after navigation
+        searchResults?.classList.add('hidden');
+        mobileSearchResults?.classList.add('hidden');
+      }
+    });
+  });
+</script>
+
+<style>
+  .scrolled {
+    @apply h-16 lg:h-20;
+  }
+</style>

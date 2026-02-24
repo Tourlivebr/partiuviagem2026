@@ -1,0 +1,679 @@
+---
+// Dados dos passeios baseados na imagem
+const passeios = [
+  {
+    id: 1,
+    titulo: "Cristais de Gramado",
+    subtitulo: "Ingresso",
+    categoria: "INGRESSOS E ATRAÇÕES",
+    imagem: "/images/cristais/cristais_de_gramado_o_inquestionavel.jpg",
+    avaliacao: 4.67,
+    totalAvaliacoes: 6,
+    preco: 38.00,
+    parcelas: 1,
+    slug: "cristais-de-gramado",
+    duracao: 120, // em minutos
+    vendas: 150, // número de vendas
+    tags: [
+      "Fábrica de cristal Murano",
+      "Tour ao vivo da produção artística",
+      "Espetáculo 'A Voz do Cristal'"
+    ]
+  },
+  {
+    id: 2,
+    titulo: "Grupo Dreams",
+    subtitulo: "Passaporte para 7 Atrações",
+    categoria: "INGRESSOS E ATRAÇÕES",
+    imagem: "/images/grupo-dreams-passaporte.jpg",
+    avaliacao: 4.01,
+    totalAvaliacoes: 10,
+    preco: 199.00,
+    parcelas: 1,
+    slug: "grupo-dreams",
+    duracao: 240, // em minutos
+    vendas: 89,
+    tags: [
+      "8 atrações imperdíveis aqui",
+      "Espaços interativos para selfies",
+      "Cenários românticos para casais"
+    ]
+  },
+  {
+    id: 4,
+    titulo: "Parque Terra Mágica Florybal",
+    subtitulo: "Ingresso",
+    categoria: "INGRESSOS E ATRAÇÕES",
+    imagem: "/images/parqueflorybal/terra-magica-florybal.webp",
+    avaliacao: 4.57,
+    totalAvaliacoes: 7,
+    preco: 75.00,
+    parcelas: 1,
+    slug: "terra-magica-florybal",
+    duracao: 180, // em minutos
+    vendas: 120,
+    tags: [
+      "Dinossauros realistas e sonoros",
+      "Cachoeiras e natureza preservada",
+      "Trilhas mágicas e temáticas"
+    ]
+  },
+  {
+    id: 5,
+    titulo: "Parque Vila da Mônica",
+    subtitulo: "Ingresso",
+    categoria: "INGRESSOS E ATRAÇÕES",
+    imagem: "/images/monica/monica.jpg",
+    avaliacao: 4.14,
+    totalAvaliacoes: 7,
+    preco: 29.00,
+    parcelas: 6,
+    slug: "parque-vila-da-monica",
+    duracao: 150, // em minutos
+    vendas: 75,
+    tags: [
+      "Diversão para toda a família",
+      "Encontro com personagens famosos",
+      "Ambiente seguro e inclusivo"
+    ]
+  },
+  {
+    id: 6,
+    titulo: "Parque Space Adventure I",
+    subtitulo: "Ingresso",
+    categoria: "INGRESSOS E ATRAÇÕES",
+    imagem: "/images/spaceadventure/space01.webp",
+    avaliacao: 4.00,
+    totalAvaliacoes: 6,
+    preco: 39.00,
+    parcelas: 6,
+    slug: "parque-space-adventure",
+    duracao: 135, // em minutos
+    vendas: 60,
+    tags: [
+      "Acesso limitado a 15 atrações",
+      "Show de patinação artística",
+      "Patinação no gelo inclusa"
+    ]
+  },
+  {    id: 7,
+    titulo: "Alpen Park",
+    subtitulo: "Ingresso",
+    categoria: "INGRESSOS E ATRAÇÕES",
+    imagem: "/images/Alpenpark/Alpenpark01.JPG",
+    avaliacao: 4.75,
+    totalAvaliacoes: 8,
+    preco: 32.00,
+    parcelas: 1,
+    slug: "alpen-park",
+    duracao: 240, // em minutos
+    vendas: 95,
+    tags: [
+      "Montanha-russa Fogo do Dragão",
+      "Trenó com velocidade de 40km/h",
+      "Arvorismo e tirolesas"
+    ]
+  },
+  {    id: 8,
+    titulo: "Mini Mundo",
+    subtitulo: "Ingresso",
+    categoria: "INGRESSOS E ATRAÇÕES",
+    imagem: "/images/Mini-Mundo/minimundo.png",
+    avaliacao: 4.80,
+    totalAvaliacoes: 8,
+    preco: 45.00,
+    parcelas: 1,
+    slug: "mini-mundo",
+    duracao: 120, // em minutos
+    vendas: 95, // número de vendas
+    tags: [
+      "Cidade em miniatura",
+      "Réplicas fiéis de obras brasileiras",
+      "Parque ao ar livre"
+    ]
+  }
+  // Adicione novos passeios aqui seguindo a mesma estrutura
+];
+---
+
+<section class="relative pt-20 lg:pt-10">
+  <!-- Cabeçalho da seção -->
+  <div class="text-center mb-12">
+    <div class="flex items-center justify-center mb-6">
+      <div class="h-px bg-gradient-to-r from-transparent via-secondary-500 to-transparent flex-1 max-w-xs"></div>
+      <h2 class="text-3xl lg:text-4xl font-bold text-primary-900 dark:text-neutral-100 mx-8">
+        Ingressos e Atrações em <span class="text-secondary-500 dark:text-secondary-400">Gramado e Canela</span>
+      </h2>
+      <div class="h-px bg-gradient-to-r from-transparent via-secondary-500 to-transparent flex-1 max-w-xs"></div>
+    </div>
+    
+    <!-- Filtros de ordenação -->
+    <div class="flex items-center justify-center gap-3 mb-8">
+      <label for="sort-select" class="text-primary-800 dark:text-neutral-300 font-medium text-sm">Ordenar por:</label>
+      <div class="relative">
+        <select 
+          id="sort-select" 
+          class="appearance-none bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-primary-900 dark:text-neutral-100 py-2 pl-4 pr-10 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:border-transparent text-sm cursor-pointer shadow-sm min-w-[160px]"
+        >
+          <option value="vendas">Mais vendido</option>
+          <option value="preco">Mais barato</option>
+          <option value="duracao-desc">Mais longo</option>
+          <option value="duracao-asc">Mais curto</option>
+        </select>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-primary-600 dark:text-neutral-400">
+          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Container do carrossel -->
+  <div class="relative overflow-hidden">
+    <div id="carousel-container" class="flex transition-transform duration-500 ease-in-out">
+      {passeios.map((passeio) => (
+        <div class="flex-none w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 px-3" data-id={passeio.id}>
+          <div class="bg-white dark:bg-neutral-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
+            <div class="relative h-48 overflow-hidden">
+              <img 
+                src={passeio.imagem} 
+                alt={passeio.titulo}
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+              <div class="absolute top-3 left-3">
+                <span class="bg-secondary-500 text-primary-900 text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                  {passeio.categoria}
+                </span>
+              </div>
+            </div>
+            <div class="p-6">
+              <h3 class="font-bold text-lg text-primary-900 dark:text-neutral-100 mb-1">
+                {passeio.titulo}
+              </h3>
+              <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-3">
+                {passeio.subtitulo}
+              </p>
+              {passeio.avaliacao > 0 && (
+                <div class="flex items-center gap-2 mb-4">
+                  <div class="flex text-accent-400">
+                    {Array.from({length: 5}, (_, i) => (
+                      <svg class={`w-4 h-4 ${i < Math.floor(passeio.avaliacao) ? 'fill-current' : i < passeio.avaliacao ? 'fill-current opacity-50' : 'text-neutral-300'}`} viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <span class="text-sm text-secondary-600 dark:text-neutral-400">
+                    {passeio.avaliacao.toFixed(2)} de {passeio.totalAvaliacoes} avaliações
+                  </span>
+                </div>
+              )}
+              <div class="space-y-2 mb-6">
+                {passeio.tags.map((tag) => (
+                  <div class="flex items-center text-sm text-secondary-600 dark:text-neutral-400">
+                    <svg class="w-4 h-4 text-primary-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                    {tag}
+                  </div>
+                ))}
+              </div>
+              <div class="border-t border-neutral-200 dark:border-secondary-700 pt-4">
+                <div class="flex items-center justify-between mb-4">
+                  <div>
+                    <p class="text-sm text-secondary-500 dark:text-neutral-400">A partir de</p>
+                    <p class="text-2xl font-bold text-secondary-900 dark:text-neutral-100">
+                      {`R$ ${passeio.preco.toFixed(2).replace('.', ',')}`}
+                    </p>
+                    
+                  </div>
+                </div>
+                <a 
+                  href={`/${passeio.slug}`}
+                  class="w-full bg-secondary-500 hover:bg-secondary-600 text-primary-900 font-bold py-3 px-4 rounded-lg transition-colors duration-200 block text-center uppercase tracking-wide shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                >
+                  COMPRAR AGORA
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Controles de navegação -->
+    <button 
+      id="prev-btn"
+      class="absolute left-4 top-1/2 -translate-y-1/2 bg-neutral-50 dark:bg-secondary-800 shadow-lg rounded-full p-3 hover:bg-neutral-100 dark:hover:bg-secondary-700 transition-colors z-10 hidden sm:block"
+    >
+      <svg class="w-6 h-6 text-secondary-600 dark:text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+    
+    <button 
+      id="next-btn"
+      class="absolute right-4 top-1/2 -translate-y-1/2 bg-neutral-50 dark:bg-secondary-800 shadow-lg rounded-full p-3 hover:bg-neutral-100 dark:hover:bg-secondary-700 transition-colors z-10 hidden sm:block"
+    >
+      <svg class="w-6 h-6 text-secondary-600 dark:text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Indicadores -->
+  <div class="flex justify-center mt-8 space-x-2" id="indicators">
+    <!-- Os indicadores serão gerados dinamicamente pelo JavaScript -->
+  </div>
+</section>
+
+<script>
+  // Dados dos passeios para ordenação
+  const passeiosData = [
+    {
+      id: 1,
+      titulo: "Cristais de Gramado",
+      subtitulo: "Ingresso",
+      categoria: "INGRESSOS E ATRAÇÕES",
+      imagem: "/images/cristais/cristais_de_gramado_o_inquestionavel.jpg",
+      avaliacao: 4.67,
+      totalAvaliacoes: 6,
+      preco: 38.00,
+      parcelas: 1,
+      slug: "cristais-de-gramado",
+      duracao: 120,
+      vendas: 150,
+      tags: [
+        "Fábrica de cristal Murano",
+        "Tour ao vivo da produção artística",
+        "Espetáculo 'A Voz do Cristal'"
+      ]
+    },
+    {
+      id: 2,
+      titulo: "Grupo Dreams",
+      subtitulo: "Passaporte para 7 Atrações",
+      categoria: "INGRESSOS E ATRAÇÕES",
+      imagem: "/images/grupo-dreams-passaporte.jpg",
+      avaliacao: 4.01,
+      totalAvaliacoes: 10,
+      preco: 199.00,
+      parcelas: 1,
+      slug: "grupo-dreams",
+      duracao: 240,
+      vendas: 89,
+      tags: [
+        "8 atrações imperdíveis aqui",
+        "Espaços interativos para selfies",
+        "Cenários românticos para casais"
+      ]
+    },
+    {
+      id: 4,
+      titulo: "Parque Terra Mágica Florybal",
+      subtitulo: "Ingresso",
+      categoria: "INGRESSOS E ATRAÇÕES",
+      imagem: "/images/parqueflorybal/terra-magica-florybal.webp",
+      avaliacao: 4.57,
+      totalAvaliacoes: 7,
+      preco: 75.00,
+      parcelas: 1,
+      slug: "terra-magica-florybal",
+      duracao: 180, // em minutos
+      vendas: 120,
+      tags: [
+        "Dinossauros realistas e sonoros",
+        "Cachoeiras e natureza preservada",
+        "Trilhas mágicas e temáticas"
+      ]
+    },
+    {
+      id: 5,
+      titulo: "Parque Vila da Mônica",
+      subtitulo: "Ingresso",
+      categoria: "INGRESSOS E ATRAÇÕES",
+      imagem: "/images/monica/monica.jpg",
+      avaliacao: 4.14,
+      totalAvaliacoes: 7,
+      preco: 29.00,
+      parcelas: 6,
+      slug: "parque-vila-da-monica",
+      duracao: 150, // em minutos
+      vendas: 75,
+      tags: [
+        "Diversão para toda a família",
+        "Encontro com personagens famosos",
+        "Ambiente seguro e inclusivo"
+      ]
+    },
+    {
+      id: 6,
+      titulo: "Parque Space Adventure I",
+      subtitulo: "Ingresso",
+      categoria: "INGRESSOS E ATRAÇÕES",
+      imagem: "/images/spaceadventure/space01.webp",
+      avaliacao: 4.00,
+      totalAvaliacoes: 6,
+      preco: 39.00,
+      parcelas: 6,
+      slug: "parque-space-adventure",
+      duracao: 135,
+      vendas: 60,
+      tags: [
+        "Acesso limitado a 15 atrações",
+        "Show de patinação artística",
+        "Patinação no gelo inclusa"
+      ]
+    }
+  ];
+
+  // Função para criar HTML do card
+  function createCardHTML(passeio) {
+    const starsHTML = passeio.avaliacao > 0 ? `
+      <div class="flex flex-col mb-4">
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">Nossos Clientes Recomendam:</p>
+        <div class="flex items-center gap-2">
+          <div class="flex text-yellow-400">
+            ${Array.from({length: 5}, (_, i) => `
+              <svg class="w-4 h-4 ${i < Math.floor(passeio.avaliacao) ? 'fill-current' : i < passeio.avaliacao ? 'fill-current opacity-50' : 'text-gray-300'}" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+            `).join('')}
+          </div>
+          <span class="text-sm text-gray-600 dark:text-gray-400">
+            ${passeio.avaliacao.toFixed(2)} de ${passeio.totalAvaliacoes} avaliações
+          </span>
+        </div>
+      </div>
+    ` : '';
+
+    const tagsHTML = passeio.tags.map(tag => `
+      <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+        <svg class="w-4 h-4 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+        </svg>
+        ${tag}
+      </div>
+    `).join('');
+
+    return `
+      <div class="flex-none w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 px-3" data-id="${passeio.id}">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
+          <div class="relative h-48 overflow-hidden">
+            <img 
+              src="${passeio.imagem}" 
+              alt="${passeio.titulo}"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+            <div class="absolute top-3 left-3">
+              <span class="bg-primary-600 text-white text-xs font-medium px-2 py-1 rounded-full">
+                ${passeio.categoria}
+              </span>
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-1">
+              ${passeio.titulo}
+            </h3>
+            <p class="text-gray-600 dark:text-gray-400 text-sm mb-3">
+              ${passeio.subtitulo}
+            </p>
+            ${starsHTML}
+            <div class="space-y-2 mb-6">
+              ${tagsHTML}
+            </div>
+            <div class="border-t pt-4">
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <p class="text-sm text-gray-500 dark:text-gray-400">A partir de</p>
+                  <p class="text-2xl font-bold text-gray-900 dark:text-white">
+                    R$ ${passeio.preco.toFixed(2).replace('.', ',')}
+                  </p>
+                 
+                </div>
+              </div>
+              <a 
+                href="/${passeio.slug}"
+                class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 block text-center"
+              >
+                COMPRAR AGORA
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Função para ordenar passeios
+  function sortPasseios(criteria) {
+    let sortedPasseios = [...passeiosData];
+    
+    switch(criteria) {
+      case 'vendas':
+        sortedPasseios.sort((a, b) => b.vendas - a.vendas);
+        break;
+      case 'preco':
+        sortedPasseios.sort((a, b) => a.preco - b.preco);
+        break;
+      case 'duracao-desc':
+        sortedPasseios.sort((a, b) => b.duracao - a.duracao);
+        break;
+      case 'duracao-asc':
+        sortedPasseios.sort((a, b) => a.duracao - b.duracao);
+        break;
+      default:
+        sortedPasseios.sort((a, b) => b.vendas - a.vendas);
+    }
+    
+    return sortedPasseios;
+  }
+
+  // Função para atualizar o carrossel com novos dados
+  function updateCarouselContent(sortedPasseios) {
+    const container = document.getElementById('carousel-container');
+    container.innerHTML = sortedPasseios.map(passeio => createCardHTML(passeio)).join('');
+    
+    // Reset posição do carrossel
+    currentSlide = 0;
+    updateCarousel();
+  }
+
+  // Função para atualizar botões ativos
+  function updateActiveButton(activeButton) {
+    document.querySelectorAll('.sort-btn').forEach(btn => {
+      btn.classList.remove('bg-primary-100', 'text-primary-700', 'active');
+      btn.classList.add('bg-neutral-100', 'text-secondary-700', 'dark:bg-secondary-700', 'dark:text-neutral-300');
+    });
+    
+    activeButton.classList.remove('bg-neutral-100', 'text-secondary-700', 'dark:bg-secondary-700', 'dark:text-neutral-300');
+    activeButton.classList.add('bg-primary-100', 'text-primary-700', 'active');
+  }
+
+  // Event listeners para botões de ordenação
+  document.querySelectorAll('.sort-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      const sortCriteria = button.getAttribute('data-sort');
+      const sortedPasseios = sortPasseios(sortCriteria);
+      updateCarouselContent(sortedPasseios);
+      updateActiveButton(button);
+    });
+  });
+
+  // Código do carrossel existente
+  let currentSlide = 0;
+  const container = document.getElementById('carousel-container');
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const indicatorsContainer = document.getElementById('indicators');
+  
+  // Calcular número de slides baseado no tamanho da tela
+  function getSlidesPerView() {
+    if (window.innerWidth >= 1280) return 4; // xl
+    if (window.innerWidth >= 1024) return 3; // lg
+    if (window.innerWidth >= 640) return 2;  // sm
+    return 1; // mobile
+  }
+  
+  function getTotalSlides() {
+    const totalItems = container.children.length;
+    const slidesPerView = getSlidesPerView();
+    return Math.max(0, totalItems - slidesPerView + 1);
+  }
+  
+  function updateCarousel() {
+    const slideWidth = 100 / getSlidesPerView();
+    const translateX = currentSlide * slideWidth;
+    container.style.transform = `translateX(-${translateX}%)`;
+    
+    // Atualizar botões
+    const totalSlides = getTotalSlides();
+    prevBtn.style.opacity = currentSlide === 0 ? '0.5' : '1';
+    nextBtn.style.opacity = currentSlide >= totalSlides - 1 ? '0.5' : '1';
+    
+    // Atualizar indicadores
+    updateIndicators();
+  }
+  
+  function createIndicators() {
+    const totalSlides = getTotalSlides();
+    indicatorsContainer.innerHTML = '';
+    
+    for (let i = 0; i < totalSlides; i++) {
+      const indicator = document.createElement('button');
+      indicator.className = `w-2 h-2 rounded-full transition-colors ${
+        i === currentSlide ? 'bg-primary-600' : 'bg-neutral-300'
+      }`;
+      indicator.addEventListener('click', () => {
+        currentSlide = i;
+        updateCarousel();
+      });
+      indicatorsContainer.appendChild(indicator);
+    }
+  }
+  
+  function updateIndicators() {
+    const indicators = indicatorsContainer.children;
+    for (let i = 0; i < indicators.length; i++) {
+      indicators[i].className = `w-2 h-2 rounded-full transition-colors ${
+        i === currentSlide ? 'bg-primary-600' : 'bg-neutral-300'
+      }`;
+    }
+  }
+  
+  // Event listeners
+  prevBtn.addEventListener('click', () => {
+    if (currentSlide > 0) {
+      currentSlide--;
+      updateCarousel();
+    }
+  });
+  
+  nextBtn.addEventListener('click', () => {
+    const totalSlides = getTotalSlides();
+    if (currentSlide < totalSlides - 1) {
+      currentSlide++;
+      updateCarousel();
+    }
+  });
+  
+  // Inicializar carrossel
+  function initCarousel() {
+    createIndicators();
+    updateCarousel();
+  }
+  
+  // Auto-play (opcional)
+  let autoPlayInterval;
+  function startAutoPlay() {
+    autoPlayInterval = setInterval(() => {
+      const totalSlides = getTotalSlides();
+      if (currentSlide < totalSlides - 1) {
+        currentSlide++;
+      } else {
+        currentSlide = 0;
+      }
+      updateCarousel();
+    }, 8000); // Alterado de 5000ms (5s) para 8000ms (8s)
+  }
+  
+  function stopAutoPlay() {
+    clearInterval(autoPlayInterval);
+  }
+  
+  // Pausar auto-play ao hover
+  container.addEventListener('mouseenter', stopAutoPlay);
+  container.addEventListener('mouseleave', startAutoPlay);
+  
+  // Funcionalidade de touch/swipe para mobile
+  let startX = 0;
+  let startY = 0;
+  let isDragging = false;
+  let startTime = 0;
+  
+  container.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    isDragging = true;
+    startTime = Date.now();
+    stopAutoPlay();
+  }, { passive: true });
+  
+  container.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    
+    const currentX = e.touches[0].clientX;
+    const currentY = e.touches[0].clientY;
+    const diffX = Math.abs(currentX - startX);
+    const diffY = Math.abs(currentY - startY);
+    
+    // Se o movimento horizontal for maior que o vertical, prevenir scroll vertical
+    if (diffX > diffY) {
+      e.preventDefault();
+    }
+  }, { passive: false });
+  
+  container.addEventListener('touchend', (e) => {
+    if (!isDragging) return;
+    
+    const endX = e.changedTouches[0].clientX;
+    const endY = e.changedTouches[0].clientY;
+    const diffX = startX - endX;
+    const diffY = Math.abs(startY - endY);
+    const diffTime = Date.now() - startTime;
+    
+    isDragging = false;
+    
+    // Verificar se foi um swipe horizontal (não vertical)
+    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50 && diffTime < 300) {
+      const totalSlides = getTotalSlides();
+      
+      if (diffX > 0 && currentSlide < totalSlides - 1) {
+        // Swipe para a esquerda - próximo slide
+        currentSlide++;
+        updateCarousel();
+      } else if (diffX < 0 && currentSlide > 0) {
+        // Swipe para a direita - slide anterior
+        currentSlide--;
+        updateCarousel();
+      }
+    }
+    
+    // Reiniciar auto-play após um delay
+    setTimeout(() => {
+      startAutoPlay();
+    }, 1000);
+  }, { passive: true });
+  
+  // Redimensionar janela
+  window.addEventListener('resize', () => {
+    currentSlide = 0;
+    initCarousel();
+  });
+  
+  // Inicializar quando a página carregar
+  document.addEventListener('DOMContentLoaded', () => {
+    initCarousel();
+    startAutoPlay();
+  });
+</script>

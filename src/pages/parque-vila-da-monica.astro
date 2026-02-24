@@ -1,0 +1,304 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import StarRating from '../components/StarRating.astro';
+
+const passeio = {
+  titulo: "Parque Vila da Mônica",
+  subtitulo: "Ingresso",
+  categoria: "INGRESSOS E ATRAÇÕES",
+  preco: 21.50,
+  avaliacao: 4.14,
+  totalAvaliacoes: 7,
+  parcelas: "6x sem juros",
+  descricao: "Diversão garantida para toda a família no Parque Vila da Mônica! Um mundo mágico com personagens famosos, brinquedos incríveis e muita aventura esperando por você.",
+  inclusos: [
+    "Diversão para toda a família",
+    "Encontro com personagens famosos",
+    "Ambiente seguro e inclusivo"
+  ],
+  duracao: "Dia inteiro",
+  horarios: ["Consulte horários de funcionamento"],
+  galeria: [
+    "/images/monica/monica.jpg",
+    "/images/monica/monica01.jpg",
+    "/images/monica/monica02.jpg",
+    "/images/monica/monica03.jpg",
+    "/images/monica/monica04.jpg",
+    "/images/monica/monica05.jpg",
+    "/images/monica/monica06.jpg",
+    "/images/monica/monica07.jpg",
+    "/images/monica/monica08.jpg",
+    "/images/monica/monica09.jpg",
+    "/images/monica/monica10.jpg",
+    "/images/monica/monica11.jpg",
+    "/images/monica/monica12.jpg"
+  ],
+  tags: ["Diversão familiar", "Personagens famosos", "Ambiente seguro"]
+};
+
+const whatsappMessage = `Olá! Gostaria de mais informações sobre o ${passeio.titulo} - ${passeio.subtitulo}. Valor: R$ ${passeio.preco.toFixed(2).replace('.', ',')} em ${passeio.parcelas}.`;
+const whatsappUrl = `https://wa.me/5554993723094?text=${encodeURIComponent(whatsappMessage)}`;
+---
+
+<BaseLayout 
+  title={`${passeio.titulo} - ${passeio.subtitulo} | Partiu Viagem`}
+  description={passeio.descricao}
+>
+  <Header />
+  
+  <main class="pt-20 lg:pt-24">
+    <!-- Hero Section -->
+    <section class="relative h-96 lg:h-[500px] overflow-hidden" style={`background-image: url('${passeio.galeria[0]}'); background-attachment: fixed; background-size: cover; background-position: center; background-repeat: no-repeat;`}>
+      <div class="absolute inset-0 bg-black/40"></div>
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="text-center text-white px-4">
+          <span class="inline-block px-3 py-1 bg-primary-600 text-white text-sm font-medium rounded-full mb-4">
+            {passeio.categoria}
+          </span>
+          <h1 class="text-4xl lg:text-6xl font-bold mb-4">{passeio.titulo}</h1>
+          <p class="text-xl lg:text-2xl text-gray-200">{passeio.subtitulo}</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="container mx-auto px-4 py-12">
+      <div class="grid lg:grid-cols-3 gap-12">
+        <div class="lg:col-span-2">
+          <!-- Avaliações e Preço -->
+          <div class="flex flex-wrap items-center justify-between mb-8 p-6 bg-gray-50 rounded-xl">
+            <div class="flex items-center space-x-4 mb-4 lg:mb-0">
+              <div class="flex flex-col">
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-1"><strong>Nossos Clientes Recomendam:</strong></p>
+                <div class="flex items-center">
+                  <StarRating rating={passeio.avaliacao} />
+                  <span class="text-gray-600 ml-2">({passeio.totalAvaliacoes} avaliações)</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-right">
+              <div class="text-gray-600 text-sm mb-1">A partir de:</div>
+              <div class="text-3xl font-bold text-primary-600">R$ {passeio.preco.toFixed(2).replace('.', ',')}</div>
+            </div>
+          </div>
+
+          <!-- Descrição -->
+          <div class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Sobre esta atração</h2>
+            <div class="prose prose-lg max-w-none">
+              <p class="text-gray-700 leading-relaxed mb-4">
+                Criada para te transportar para o universo lúdico de Mauricio de Sousa, a Vila da Mônica Gramado é um lugar de diversão em família.
+              </p>
+              <p class="text-gray-700 leading-relaxed mb-4">
+                Na companhia de nossos personagens tão amados, como a Mônica, o Cebolinha, a Magali, a Milena e o Cascão, os visitantes têm a oportunidade de conhecer de pertinho o Bairro do Limoeiro.
+              </p>
+              <p class="text-gray-700 leading-relaxed">
+                Implantada em um complexo de 25 mil m², às margens da RS 235, com área total de 11 mil m², sendo 5 mil m² destinados exclusivamente às atrações do parque.
+              </p>
+            </div>
+          </div>
+
+          <!-- Atrações do Parque -->
+          <div class="mb-8">
+            <h3 class="text-2xl font-bold mb-6">Atrações do Parque</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div class="bg-gradient-to-br from-pink-50 to-purple-50 p-4 rounded-lg border border-pink-200 hover:shadow-md transition-shadow">
+                <h4 class="font-semibold text-pink-700 mb-2">🎭 Academia de Teatro</h4>
+                <p class="text-sm text-gray-600">Desenvolva seus talentos artísticos</p>
+              </div>
+              <div class="bg-gradient-to-br from-blue-50 to-cyan-50 p-4 rounded-lg border border-blue-200 hover:shadow-md transition-shadow">
+                <h4 class="font-semibold text-blue-700 mb-2">🎨 Ateliê da Marina</h4>
+                <p class="text-sm text-gray-600">Espaço criativo para arte</p>
+              </div>
+              <div class="bg-gradient-to-br from-orange-50 to-yellow-50 p-4 rounded-lg border border-orange-200 hover:shadow-md transition-shadow">
+                <h4 class="font-semibold text-orange-700 mb-2">🚧 Canteiro de Obras</h4>
+                <p class="text-sm text-gray-600">Diversão na construção</p>
+              </div>
+              <div class="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200 hover:shadow-md transition-shadow">
+                <h4 class="font-semibold text-green-700 mb-2">🎠 Carrossel do Chico Bento</h4>
+                <p class="text-sm text-gray-600">Diversão rural clássica</p>
+              </div>
+              <div class="bg-gradient-to-br from-red-50 to-pink-50 p-4 rounded-lg border border-red-200 hover:shadow-md transition-shadow">
+                <h4 class="font-semibold text-red-700 mb-2">🏠 Casa da Magali</h4>
+                <p class="text-sm text-gray-600">Lar da gulosa mais famosa</p>
+              </div>
+              <div class="bg-gradient-to-br from-purple-50 to-pink-50 p-4 rounded-lg border border-purple-200 hover:shadow-md transition-shadow">
+                <h4 class="font-semibold text-purple-700 mb-2">🏠 Casa da Milena</h4>
+                <p class="text-sm text-gray-600">Mundo da menina especial</p>
+              </div>
+              <div class="bg-gradient-to-br from-yellow-50 to-orange-50 p-4 rounded-lg border border-yellow-200 hover:shadow-md transition-shadow">
+                <h4 class="font-semibold text-yellow-700 mb-2">🏠 Casa da Mônica</h4>
+                <p class="text-sm text-gray-600">Lar da dentuça mais forte</p>
+              </div>
+              <div class="bg-gradient-to-br from-gray-50 to-slate-50 p-4 rounded-lg border border-gray-200 hover:shadow-md transition-shadow">
+                <h4 class="font-semibold text-gray-700 mb-2">🏠 Casa do Cascão</h4>
+                <p class="text-sm text-gray-600">O reino da sujeira</p>
+              </div>
+              <div class="bg-gradient-to-br from-green-50 to-lime-50 p-4 rounded-lg border border-green-200 hover:shadow-md transition-shadow">
+                <h4 class="font-semibold text-green-700 mb-2">🏠 Casa do Cebolinha</h4>
+                <p class="text-sm text-gray-600">Planos infalíveis aqui</p>
+              </div>
+              <div class="bg-gradient-to-br from-indigo-50 to-purple-50 p-4 rounded-lg border border-indigo-200 hover:shadow-md transition-shadow">
+                <h4 class="font-semibold text-indigo-700 mb-2">🏠 Casa do Louco</h4>
+                <p class="text-sm text-gray-600">Diversão sem limites</p>
+              </div>
+              <div class="bg-gradient-to-br from-teal-50 to-cyan-50 p-4 rounded-lg border border-teal-200 hover:shadow-md transition-shadow">
+                <h4 class="font-semibold text-teal-700 mb-2">🏠 Casa do Luca</h4>
+                <p class="text-sm text-gray-600">Aventuras especiais</p>
+              </div>
+              <div class="bg-gradient-to-br from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200 hover:shadow-md transition-shadow">
+                <h4 class="font-semibold text-blue-700 mb-2">🚗 Cidade dos Carrinhos</h4>
+                <p class="text-sm text-gray-600">Trânsito divertido</p>
+              </div>
+              <div class="bg-gradient-to-br from-red-50 to-orange-50 p-4 rounded-lg border border-red-200 hover:shadow-md transition-shadow">
+                <h4 class="font-semibold text-red-700 mb-2">🚒 Corpo de Bombeiros</h4>
+                <p class="text-sm text-gray-600">Heróis em ação</p>
+              </div>
+              <div class="bg-gradient-to-br from-green-50 to-yellow-50 p-4 rounded-lg border border-green-200 hover:shadow-md transition-shadow">
+                <h4 class="font-semibold text-green-700 mb-2">🦕 Dinolândia</h4>
+                <p class="text-sm text-gray-600">Era dos dinossauros</p>
+              </div>
+              <div class="bg-gradient-to-br from-pink-50 to-red-50 p-4 rounded-lg border border-pink-200 hover:shadow-md transition-shadow">
+                <h4 class="font-semibold text-pink-700 mb-2">🏥 Hospital Veterinário</h4>
+                <p class="text-sm text-gray-600">Cuidando dos pets</p>
+              </div>
+              <div class="bg-gradient-to-br from-purple-50 to-blue-50 p-4 rounded-lg border border-purple-200 hover:shadow-md transition-shadow">
+                <h4 class="font-semibold text-purple-700 mb-2">🏨 Hotel Pet Melhor Amigo</h4>
+                <p class="text-sm text-gray-600">Hospedagem especial</p>
+              </div>
+              <div class="bg-gradient-to-br from-yellow-50 to-pink-50 p-4 rounded-lg border border-yellow-200 hover:shadow-md transition-shadow">
+                <h4 class="font-semibold text-yellow-700 mb-2">⭐ Jardim das Estrelas</h4>
+                <p class="text-sm text-gray-600">Magia celestial</p>
+              </div>
+              <div class="bg-gradient-to-br from-cyan-50 to-blue-50 p-4 rounded-lg border border-cyan-200 hover:shadow-md transition-shadow">
+                <h4 class="font-semibold text-cyan-700 mb-2">🔬 Laboratório do Franjinha</h4>
+                <p class="text-sm text-gray-600">Ciência divertida</p>
+              </div>
+              <div class="bg-gradient-to-br from-lime-50 to-green-50 p-4 rounded-lg border border-lime-200 hover:shadow-md transition-shadow">
+                <h4 class="font-semibold text-lime-700 mb-2">🚗 Limão Autoescola</h4>
+                <p class="text-sm text-gray-600">Aprenda a dirigir</p>
+              </div>
+              <div class="bg-gradient-to-br from-orange-50 to-red-50 p-4 rounded-lg border border-orange-200 hover:shadow-md transition-shadow">
+                <h4 class="font-semibold text-orange-700 mb-2">🦁 Praça Sansão</h4>
+                <p class="text-sm text-gray-600">Força e diversão</p>
+              </div>
+              <div class="bg-gradient-to-br from-indigo-50 to-purple-50 p-4 rounded-lg border border-indigo-200 hover:shadow-md transition-shadow">
+                <h4 class="font-semibold text-indigo-700 mb-2">🎡 Roda-gigante</h4>
+                <p class="text-sm text-gray-600">Vista panorâmica</p>
+              </div>
+              <div class="bg-gradient-to-br from-gray-50 to-blue-50 p-4 rounded-lg border border-gray-200 hover:shadow-md transition-shadow">
+                <h4 class="font-semibold text-gray-700 mb-2">🚌 Terminal da Vila</h4>
+                <p class="text-sm text-gray-600">Ponto de encontro</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- O que está incluso -->
+          <div class="mb-8">
+            <h3 class="text-xl font-bold mb-4">O que está incluso</h3>
+            <ul class="space-y-2">
+              {passeio.inclusos.map(item => (
+                <li class="flex items-center space-x-3">
+                  <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span class="text-gray-700">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Tags -->
+          <div class="mb-8">
+            <h3 class="text-xl font-bold mb-4">Destaques</h3>
+            <div class="flex flex-wrap gap-2">
+              {passeio.tags.map(tag => (
+                <span class="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <!-- Galeria de Imagens -->
+          <div class="mb-8">
+            <h3 class="text-xl font-bold mb-4">Galeria</h3>
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+              {passeio.galeria.map((imagem, index) => (
+                <div class="aspect-square overflow-hidden rounded-lg cursor-pointer hover:opacity-80 transition-opacity">
+                  <img 
+                    src={imagem} 
+                    alt={`${passeio.titulo} - Imagem ${index + 1}`}
+                    class="w-full h-full object-cover"
+                    onclick={`openModal('${imagem}')`}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar de Reserva -->
+        <div class="lg:col-span-1">
+          <div class="sticky top-32">
+            <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-lg">
+              <div class="text-center mb-6">
+                <div class="text-gray-600 text-sm mb-1">A partir de:</div>
+                <div class="text-3xl font-bold text-primary-600 mb-2">
+                  R$ {passeio.preco.toFixed(2).replace('.', ',')}
+                </div>
+              </div>
+
+              <!-- Informações do Passeio -->
+              <div class="space-y-4 mb-6">
+                <div class="flex justify-between">
+                  <span class="text-gray-600">Duração:</span>
+                  <span class="font-medium">{passeio.duracao}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-600">Horários:</span>
+                  <span class="font-medium">{passeio.horarios.join(', ')}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-600">Categoria:</span>
+                  <span class="font-medium">{passeio.categoria}</span>
+                </div>
+              </div>
+
+              <!-- Botão de Compra pelo Site Oficial -->
+              <a 
+                href="https://www.parqueviladamonica.com.br/ingressos"
+                target="_blank"
+                class="w-full bg-primary-600 hover:bg-primary-700 text-white font-bold py-4 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2 mb-4"
+              >
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <span class="text-center">Compre com DESCONTO<br>pelo Site Oficial</span>
+              </a>
+
+              <a 
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2"
+              >
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+                </svg>
+                <span>Reservar via WhatsApp</span>
+              </a>
+
+              <div class="text-center mt-4">
+                <p class="text-sm text-gray-600">Resposta rápida garantida!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>

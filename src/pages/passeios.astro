@@ -1,0 +1,288 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import StarRating from '../components/StarRating.astro';
+
+// Dados dos passeios (categoria "PASSEIOS PRIVATIVOS" e "RECEPTIVO")
+const passeios = [
+  {
+    id: 1,
+    titulo: "Transfer Ida e Volta (POA ou Caxias/ Gramado ou Canela)",
+    subtitulo: "Transporte Privativo",
+    categoria: "RECEPTIVO",
+    imagem: "/images/Transfer/Transfer.jpg",
+    avaliacao: 4.95,
+    totalAvaliacoes: 127,
+    preco: 700.00,
+    slug: "transfer-privativo",
+    duracao: "4-5 horas",
+    tags: ["Sem espera no embarque/desembarque", "Embarque imediato", "Privacidade total"]
+  },
+  {
+    id: 2,
+    titulo: "Tour Uva e Vinho + Passeio de Maria Fumaça + Epopeia + Almoço (Coletivo)",
+    subtitulo: "Com Trem Maria Fumaça e Épopeia",
+    categoria: "PASSEIOS PRIVATIVOS",
+    imagem: "/images/maria-fumaca/fumaca01.jpg",
+    avaliacao: 4.93,
+    totalAvaliacoes: 218,
+    preco: 550.00,
+    slug: "tour-trem-vinho-maria-fumaca",
+    duracao: "8 horas",
+    tags: ["Passeio de Trem Maria Fumaça", "Degustação de vinhos e sucos", "Epopeia Italiana"]
+  },
+  {
+    id: 3,
+    titulo: "Ensaio Fotográfico Gramado e Canela",
+    subtitulo: "Passeio Privativo",
+    categoria: "PASSEIOS PRIVATIVOS",
+    imagem: "/images/ensaios-fotograficos/ensaios.jpeg",
+    avaliacao: 4.95,
+    totalAvaliacoes: 38,
+    preco: 490.00,
+    slug: "ensaio-fotografico-gramado-canela",
+    duracao: "3-4 horas",
+    tags: ["Com charme e romantismo", "Que a cidade oferece", "Preparamos o passeio fotográfico 'Gramado e Canela VIP'"]
+  }
+];
+---
+
+<BaseLayout 
+  title="Passeios e Receptivo | Partiu Viagem"
+  description="Descubra os melhores passeios privativos e receptivo em Gramado e Canela. Experiências únicas na Serra Gaúcha."
+>
+  <Header />
+  
+  <main class="pt-20 lg:pt-24">
+<!-- Hero Section -->
+<section 
+  class="relative text-white py-24 lg:py-32 bg-fixed bg-center bg-cover"
+  style="background-image: url('/images/link_passeios1.jpg'); filter: brightness(1.05) contrast(1.1) saturate(1.2);"
+>
+  <!-- Overlay branco bem leve só pra não perder legibilidade -->
+  <div class="absolute inset-0 bg-white/10"></div>
+
+  <div class="relative container mx-auto px-4 text-center">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-5xl lg:text-7xl font-bold mb-6 leading-tight">Passeios e Receptivo</h1>
+      <p class="text-xl lg:text-2xl text-green-100 mb-8 leading-relaxed">
+        Experiências autênticas e inesquecíveis na região colonial
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <div class="flex items-center text-green-100">
+          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          Guia especializado
+        </div>
+        <div class="flex items-center text-green-100">
+          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          Transporte incluso
+        </div>
+        <div class="flex items-center text-green-100">
+          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          Experiência personalizada
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+    <!-- Filtros -->
+    <section class="py-12 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+      <div class="container mx-auto px-4">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+          <div class="flex flex-col lg:flex-row justify-between items-center gap-6">
+            <div class="flex flex-wrap gap-3">
+              <button class="filter-btn active px-6 py-3 bg-green-600 text-white rounded-full text-sm font-semibold hover:bg-green-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5" data-filter="all">
+                <span class="flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+                  </svg>
+                  Todos ({passeios.length})
+                </span>
+              </button>
+              <button class="filter-btn px-6 py-3 bg-gray-200 text-gray-700 rounded-full text-sm font-semibold hover:bg-gray-300 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600" data-filter="receptivo">
+                <span class="flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+                  </svg>
+                  Receptivo
+                </span>
+              </button>
+              <button class="filter-btn px-6 py-3 bg-gray-200 text-gray-700 rounded-full text-sm font-semibold hover:bg-gray-300 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600" data-filter="privativos">
+                <span class="flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 2L3 7v11a1 1 0 001 1h12a1 1 0 001-1V7l-7-5zM9 9a1 1 0 012 0v6a1 1 0 11-2 0V9z" clip-rule="evenodd"></path>
+                  </svg>
+                  Passeios Privativos
+                </span>
+              </button>
+            </div>
+            
+            <div class="flex items-center gap-4">
+              <label for="sortSelect" class="text-sm font-medium text-gray-700 dark:text-gray-300">Ordenar:</label>
+              <select id="sortSelect" class="px-4 py-3 border border-gray-300 rounded-xl text-sm font-medium focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white shadow-md">
+                <option value="relevancia">Relevância</option>
+                <option value="menor-preco">Menor preço</option>
+                <option value="maior-preco">Maior preço</option>
+                <option value="melhor-avaliacao">Melhor avaliação</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Grid de Passeios -->
+    <section class="py-20 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
+      <div class="container mx-auto px-4">
+        <div id="passeios-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {passeios.map((passeio) => (
+            <div class="passeio-card group bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100 dark:border-gray-700" data-category={passeio.categoria.toLowerCase().replace(' ', '-').replace('passeios-privativos', 'privativos')}>
+              <div class="relative overflow-hidden">
+                <img 
+                  src={passeio.imagem} 
+                  alt={passeio.titulo}
+                  class="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div class="absolute top-4 left-4">
+                  <span class="bg-green-600 text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg backdrop-blur-sm">
+                    {passeio.categoria}
+                  </span>
+                </div>
+                <div class="absolute top-4 right-4">
+                  <div class="bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-lg">
+                    <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="p-6">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 line-clamp-2 group-hover:text-green-600 transition-colors duration-300">
+                  {passeio.titulo}
+                </h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">
+                  {passeio.subtitulo}
+                </p>
+                
+                <div class="flex flex-col mb-6">
+                  <p class="text-gray-700 font-medium mb-1">Nossos Clientes Recomendam:</p>
+                  <div class="flex items-center">
+                    <StarRating rating={passeio.avaliacao} />
+                    <span class="ml-2 text-sm font-medium text-gray-600 dark:text-gray-400">
+                      {passeio.avaliacao} ({passeio.totalAvaliacoes} avaliações)
+                    </span>
+                  </div>
+                </div>
+                
+                <div class="space-y-3 mb-6">
+                  {passeio.tags.map((tag) => (
+                    <div class="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                      <div class="w-2 h-2 bg-green-500 rounded-full mr-3 flex-shrink-0"></div>
+                      <span class="line-clamp-1">{tag}</span>
+                    </div>
+                  ))}
+                </div>
+                
+                <div class="border-t border-gray-100 dark:border-gray-700 pt-6">
+                  <div class="flex items-center justify-between mb-6">
+                    <div>
+                      <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">A partir de</p>
+                      <p class="text-3xl font-bold text-green-600 dark:text-green-400">
+                        R$ {passeio.preco.toFixed(2).replace('.', ',')}
+                      </p>
+                      <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 flex items-center">
+                        <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                        </svg>
+                        Duração: {passeio.duracao}
+                      </p>
+                    </div>
+                  </div>
+                  <a 
+                    href={`/${passeio.slug}`}
+                    class="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 block text-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                  >
+                    <span class="flex items-center justify-center gap-2">
+                      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>
+                      </svg>
+                      VER DETALHES
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<script>
+  // Filtros
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Remove active de todos os botões
+      document.querySelectorAll('.filter-btn').forEach(b => {
+        b.classList.remove('bg-green-600', 'text-white');
+        b.classList.add('bg-gray-200', 'text-gray-700', 'dark:bg-gray-700', 'dark:text-gray-300');
+      });
+      
+      // Adiciona active ao botão clicado
+      btn.classList.remove('bg-gray-200', 'text-gray-700', 'dark:bg-gray-700', 'dark:text-gray-300');
+      btn.classList.add('bg-green-600', 'text-white');
+      
+      const filter = btn.dataset.filter;
+      const cards = document.querySelectorAll('.passeio-card');
+      
+      cards.forEach(card => {
+        if (filter === 'all' || card.dataset.category === filter) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+  
+  // Ordenação
+  document.getElementById('sortSelect').addEventListener('change', (e) => {
+    const sortBy = e.target.value;
+    const grid = document.getElementById('passeios-grid');
+    const cards = Array.from(grid.children);
+    
+    cards.sort((a, b) => {
+      const priceA = parseFloat(a.querySelector('.text-3xl').textContent.replace('R$ ', '').replace(',', '.'));
+      const priceB = parseFloat(b.querySelector('.text-3xl').textContent.replace('R$ ', '').replace(',', '.'));
+      
+      switch(sortBy) {
+        case 'menor-preco':
+          return priceA - priceB;
+        case 'maior-preco':
+          return priceB - priceA;
+        case 'melhor-avaliacao':
+          const ratingA = parseFloat(a.querySelector('.ml-2').textContent);
+          const ratingB = parseFloat(b.querySelector('.ml-2').textContent);
+          return ratingB - ratingA;
+        default:
+          return 0;
+      }
+    });
+    
+    cards.forEach(card => grid.appendChild(card));
+  });
+</script>

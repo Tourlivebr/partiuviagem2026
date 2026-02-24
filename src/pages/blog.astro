@@ -1,0 +1,338 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const modules = import.meta.glob('./blog/*.mdx', { eager: true });
+const posts = Object.entries(modules)
+  .map(([path, mod]) => {
+    const frontmatter = (mod as any).frontmatter || {};
+    const url = path.replace('./blog/', '/blog/').replace(/\.mdx$/, '');
+    return { url, ...frontmatter };
+  })
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+const categories = ['Gastronomia','Experiência','Parques'];
+---
+
+<BaseLayout title="Blog - Serra Gaúcha | Partiu Viagem">
+  <Header />
+ 
+  <!-- Hero do Blog com imagem de fundo fixa -->
+  <section class="pt-28 pb-12 relative text-white">
+    <!-- Imagem de fundo fixa -->
+    <div class="absolute inset-0 bg-fixed bg-center bg-cover z-0" style="background-image: url('/images/link_ingressos.jpg');">
+      <!-- Overlay escuro para legibilidade -->
+      <div class="absolute inset-0 bg-black opacity-60"></div>
+    </div>
+    <div class="container mx-auto px-4 relative z-10">
+      <h1 class="text-3xl md:text-4xl font-bold mb-3">Nosso dia dia na Serra Gaúcha</h1>
+      <p class="text-primary-50 md:text-lg max-w-3xl">
+        Confira nossas experiências e novidades com as melhores ofertas, descontos e promoções exclusivas. Aqui você encontra oportunidades reais para economizar e aproveitar o melhor de cada temporada!
+      </p>
+    </div>
+  </section>
+  <!-- Categorias e Busca no topo -->
+  <section class="container mx-auto px-4 -mt-6">
+    <div class="bg-white border border-neutral-200 rounded-2xl shadow-lg p-4 md:p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 backdrop-blur-sm bg-white/90">
+      <div class="flex flex-wrap gap-3">
+        {categories.map((cat) => (
+          <button data-category={cat} class="cat-chip px-4 py-2 text-sm font-medium rounded-full bg-gradient-to-r from-primary-500 to-primary-600 text-white hover:from-primary-600 hover:to-primary-700 border-none transition-all duration-300 shadow-sm hover:shadow transform hover:-translate-y-0.5">
+            {cat}
+          </button>
+        ))}
+      </div>
+      <div class="relative w-full md:max-w-sm">
+        <input id="top-search" type="text" placeholder="Buscar conteúdo do blog..." autocomplete="off" class="w-full pl-12 pr-4 py-3 border-2 border-neutral-300 rounded-xl focus:ring-4 focus:ring-primary-300 focus:border-primary-500 transition-all shadow-sm" />
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <svg class="h-6 w-6 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lista de Posts -->
+  <main class="container mx-auto px-4 py-10">
+    {posts.length === 0 ? (
+      <div class="bg-neutral-100 border border-neutral-200 rounded-xl p-6 text-neutral-700">
+        Nenhum post publicado ainda. Em breve novidades!
+      </div>
+    ) : (
+      <>
+        <div id="masonry" class="columns-1 sm:columns-2 lg:columns-3 gap-8 [column-fill:balance]">
+          {posts.map((post, i) => (
+            <div
+              class={`break-inside-avoid mb-8 group block bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 ${Math.floor(i/12)>0 ? 'hidden' : ''}`}
+              data-post
+              data-chunk={Math.floor(i/12)}
+              data-title={(post.title || '').toLowerCase()}
+              data-desc={(post.description || '').toLowerCase()}
+              data-tags={(post.tags || []).join(',').toLowerCase()}
+              data-category={(post.category || '').toLowerCase()}
+            >
+              <div class="relative">
+                {(post.video || post.videoUrl || post.coverVideo) ? (
+                  <div class={`w-full ${((post.orientation||'').toLowerCase()==='vertical') ? 'aspect-[9/16]' : 'aspect-[16/9]'} relative overflow-hidden video-container`}>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 pointer-events-none"></div>
+                    <video 
+                      src={post.video || post.videoUrl || post.coverVideo} 
+                      class="absolute inset-0 w-full h-full object-cover video-player" 
+                      controls
+                      preload="auto"
+                      poster={post.coverImage || ''}
+                    ></video>
+                  </div>
+                ) : post.coverImage ? (
+                  <div class={`w-full ${((post.orientation||'').toLowerCase()==='vertical') ? 'aspect-[9/16]' : 'aspect-[16/9]'} relative overflow-hidden`}>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+                    <a href={post.url}>
+                      <img 
+                        src={post.coverImage} 
+                        alt={post.title} 
+                        class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                      />
+                    </a>
+                  </div>
+                ) : null}
+                
+                {post.category && (
+                  <span class="absolute top-4 right-4 z-20 px-3 py-1 rounded-full bg-primary-600 text-white text-xs font-medium shadow-lg">{post.category}</span>
+                )}
+              </div>
+              
+              <div class="p-6">
+                <div class="flex items-center gap-3 text-xs text-neutral-500 mb-3">
+                  {post.date && (
+                    <span class="flex items-center gap-1">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      {new Date(post.date).toLocaleDateString('pt-BR')}
+                    </span>
+                  )}
+                </div>
+                
+                <h2 class="text-xl font-bold text-neutral-800 transition-colors line-clamp-2 mb-2">{post.title}</h2>
+                
+                {post.description && (
+                    <div class="text-container relative mb-4">
+                      <p class="text-neutral-600 line-clamp-3 mb-1 min-h-[4.5rem] post-description" id={`post-description-${i}`}>{post.description}</p>
+                      <button 
+                        class="read-more-btn text-primary-600 text-sm font-medium hover:text-primary-700 transition-colors hover:underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded hidden"
+                        aria-expanded="false"
+                        aria-controls={`post-description-${i}`}
+                      >
+                        Ler mais
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 inline ml-1">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                      </button>
+                    </div>
+                  )}
+                {!post.description && (
+                  <p class="text-neutral-600 line-clamp-3 mb-4 min-h-[4.5rem]">Descubra mais detalhes sobre este conteúdo exclusivo. Clique para ler o artigo completo e aproveitar todas as dicas e informações.</p>
+                )}
+                
+                {post.tags && post.tags.length > 0 && (
+                  <div class="flex flex-wrap gap-2 mb-4">
+                    {post.tags.slice(0, 3).map((tag) => (
+                      <span class="text-xs px-3 py-1 bg-neutral-100 text-neutral-600 rounded-md font-medium hover:bg-primary-50 hover:text-primary-700 transition-colors">{tag}</span>
+                    ))}
+                    {post.tags.length > 3 && (
+                      <span class="text-xs px-2 py-1 text-neutral-500">+{post.tags.length - 3}</span>
+                    )}
+                  </div>
+                )}
+                
+                <div class="border-t border-neutral-100 pt-4 mt-2 flex justify-center items-center">
+                  <a href="https://www.facebook.com/PartiuViagemTurismo" target="_blank" rel="noopener noreferrer" class="quero-desconto-btn bg-gradient-to-r from-primary-500 to-primary-600 text-white px-6 py-2 rounded-lg font-medium text-sm shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">Quero Desconto</a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div id="infinite-sentinel" class="h-8"></div>
+      </>
+    )}
+  </main>
+
+  <script>
+    // Filtros: categorias + busca, e rolagem infinita
+    const cards = document.querySelectorAll('[data-post]');
+    const categoryChips = document.querySelectorAll('.cat-chip');
+    const searchInput = document.getElementById('top-search');
+    const readMoreButtons = document.querySelectorAll('.read-more-btn');
+    let activeCategory = '';
+    let nextChunk = 1; // primeiro chunk (0) já visível
+
+    const sentinel = document.getElementById('infinite-sentinel');
+    const revealChunk = (n) => {
+      document.querySelectorAll(`[data-post][data-chunk="${n}"]`).forEach((el) => el.classList.remove('hidden'));
+    };
+    const revealAllChunks = () => {
+      const maxChunk = Math.max(0, ...Array.from(cards).map((c) => parseInt(c.getAttribute('data-chunk')||'0')));
+      for (let i = 0; i <= maxChunk; i++) revealChunk(i);
+    };
+    if (sentinel) {
+      const io = new IntersectionObserver((entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          revealChunk(nextChunk);
+          nextChunk++;
+        }
+      }, { rootMargin: '600px' });
+      io.observe(sentinel);
+    }
+
+    const applyFilters = () => {
+      const query = (searchInput?.value || '').toLowerCase();
+      const useFilter = !!query || !!activeCategory;
+      if (useFilter) revealAllChunks();
+      cards.forEach((card) => {
+        const title = card.getAttribute('data-title') || '';
+        const desc = card.getAttribute('data-desc') || '';
+        const cat = card.getAttribute('data-category') || '';
+        const matchesQuery = !query || title.includes(query) || desc.includes(query);
+        const matchesCategory = !activeCategory || cat === activeCategory.toLowerCase();
+        card.classList.toggle('hidden', !(matchesQuery && matchesCategory));
+      });
+    };
+    categoryChips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        const selected = chip.getAttribute('data-category') || '';
+        if (activeCategory === selected) {
+          activeCategory = '';
+          chip.classList.remove('bg-primary-200','text-primary-800');
+        } else {
+          activeCategory = selected;
+          categoryChips.forEach((c) => c.classList.remove('bg-primary-200','text-primary-800'));
+          chip.classList.add('bg-primary-200','text-primary-800');
+        }
+        applyFilters();
+      });
+    });
+    searchInput?.addEventListener('input', applyFilters);
+    
+    // Verificar descrições que precisam do botão "Ler mais"
+    function checkDescriptionLength() {
+      document.querySelectorAll('.text-container').forEach(container => {
+        const description = container.querySelector('.post-description');
+        const button = container.querySelector('.read-more-btn');
+        
+        if (!description || !button) return;
+        
+        // Verificar se o texto tem mais de 3 linhas
+        const lineHeight = parseInt(window.getComputedStyle(description).lineHeight);
+        const height = description.clientHeight;
+        const lines = Math.floor(height / lineHeight);
+        
+        // Se tiver mais de 3 linhas, mostrar o botão "Ler mais"
+        if (lines >= 3 && description.scrollHeight > description.clientHeight) {
+          button.classList.remove('hidden');
+          button.setAttribute('aria-expanded', 'false');
+        } else {
+          button.classList.add('hidden');
+        }
+      });
+    }
+    
+    // Funcionalidade de "Ler mais" para descrições longas
+    readMoreButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const container = button.closest('.text-container');
+        const shortDesc = container.querySelector('.post-description');
+        
+        if (shortDesc.classList.contains('line-clamp-3')) {
+          // Expandir o texto
+          shortDesc.classList.remove('line-clamp-3');
+          button.textContent = 'Ler menos';
+          button.setAttribute('aria-expanded', 'true');
+        } else {
+          // Recolher o texto
+          shortDesc.classList.add('line-clamp-3');
+          button.textContent = 'Ler mais';
+          button.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+    
+    // Função para ser executada quando o DOM estiver carregado
+    function initVideoPlayers() {
+      // Manipulação dos vídeos nos cards
+      const videoContainers = document.querySelectorAll('.video-container');
+      
+      videoContainers.forEach(container => {
+        const video = container.querySelector('video.video-player');
+        const playButton = container.querySelector('.play-button-overlay');
+        
+        if (!video || !playButton) return;
+        
+        // Adiciona evento de clique no botão de play
+        playButton.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          // Pausa todos os outros vídeos primeiro
+          document.querySelectorAll('video.video-player').forEach(v => {
+            if (v !== video) {
+              v.pause();
+              v.controls = false;
+            }
+          });
+          
+          // Reproduz o vídeo atual
+          if (video.paused) {
+            video.controls = true;
+            video.play().catch(err => console.error('Erro ao reproduzir vídeo:', err));
+          } else {
+            video.pause();
+          }
+        });
+        
+        // Adiciona evento de clique no vídeo
+        video.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          // Pausa todos os outros vídeos primeiro
+          document.querySelectorAll('video.video-player').forEach(v => {
+            if (v !== video) {
+              v.pause();
+              v.controls = false;
+            }
+          });
+          
+          // Reproduz o vídeo atual
+          if (video.paused) {
+            video.controls = true;
+            video.play().catch(err => console.error('Erro ao reproduzir vídeo:', err));
+          } else {
+            video.pause();
+          }
+        });
+      });
+      
+      // Verificar tamanho das descrições após carregar imagens
+      setTimeout(checkDescriptionLength, 500);
+    }
+
+    // Executa quando o DOM estiver carregado
+    document.addEventListener('DOMContentLoaded', () => {
+      initVideoPlayers();
+      checkDescriptionLength();
+    });
+    
+    // Executa também imediatamente caso o DOM já esteja carregado
+    if (document.readyState === 'interactive' || document.readyState === 'complete') {
+      initVideoPlayers();
+      checkDescriptionLength();
+    }
+    
+    // Verificar novamente quando a janela for redimensionada
+    window.addEventListener('resize', checkDescriptionLength);
+  </script>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .container { max-width: 1200px; }
+</style>

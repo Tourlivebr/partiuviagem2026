@@ -1,0 +1,218 @@
+---
+import { getCollection } from 'astro:content';
+
+// Buscar destinos nacionais
+const allDestinos = await getCollection('destinos');
+// Filter more broadly to ensure we catch files in subdirectories
+const destinosNacionais = allDestinos.filter(destino => 
+  (destino.id.includes('nacionais/') || 
+  destino.slug.includes('nacionais/') ||
+  (destino.collection === 'destinos' && destino.id.includes('nacionais'))) &&
+  !destino.id.includes('internacionais') && 
+  !destino.slug.includes('internacionais')
+);
+
+console.log(`Found ${destinosNacionais.length} national destinations`);
+
+// Mapear para o formato esperado pelo componente
+const destinos = destinosNacionais.map(destino => ({
+  id: destino.id,
+  titulo: destino.data.title,
+  subtitulo: destino.data.description,
+  categoria: "DESTINOS NACIONAIS",
+  imagem: destino.data.featuredImage,
+  avaliacao: destino.data.rating || 5.0,
+  totalAvaliacoes: destino.data.reviewCount || 0,
+  preco: destino.data.price || 0,
+  slug: `destinos/nacionais/${destino.slug.replace(/^nacionais\//, '')}`,
+  tags: [
+    destino.data.location || "Brasil",
+    destino.data.isPromo ? "Promoção" : "Imperdível",
+    "Viagem Nacional"
+  ]
+}));
+---
+
+<section class="relative pt-20 lg:pt-10">
+  <!-- Cabeçalho da seção -->
+  <div class="text-center mb-12">
+    <div class="flex items-center justify-center mb-6">
+      <div class="h-px bg-gradient-to-r from-transparent via-secondary-500 to-transparent flex-1 max-w-xs"></div>
+      <h2 class="text-3xl lg:text-4xl font-bold text-primary-900 dark:text-neutral-100 mx-8">
+        Destinos <span class="text-secondary-500 dark:text-secondary-400">Nacionais</span>
+      </h2>
+      <div class="h-px bg-gradient-to-r from-transparent via-secondary-500 to-transparent flex-1 max-w-xs"></div>
+    </div>
+    <p class="text-xl text-neutral-600 dark:text-neutral-300 max-w-3xl mx-auto mb-8">
+      Descubra as maravilhas do Brasil com nossos pacotes exclusivos
+    </p>
+  </div>
+
+  <!-- Container do carrossel -->
+  <div class="relative overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4" id="carousel-wrapper-destinos">
+    <div id="carousel-container-destinos" class="flex gap-4 w-max px-4">
+      {destinos.map((destino) => (
+        <div class="flex-none w-[85vw] sm:w-[45vw] lg:w-[30vw] xl:w-[22vw] snap-center">
+          <div class="bg-white dark:bg-neutral-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group h-full flex flex-col select-none">
+            <div class="relative h-48 overflow-hidden">
+              <img 
+                src={destino.imagem} 
+                alt={destino.titulo}
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 pointer-events-none"
+              />
+              <div class="absolute top-3 left-3">
+                <span class="bg-secondary-500 text-primary-900 text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                  {destino.categoria}
+                </span>
+              </div>
+            </div>
+            <div class="p-6 flex flex-col flex-1">
+              <h3 class="font-bold text-lg text-primary-900 dark:text-neutral-100 mb-1">
+                {destino.titulo}
+              </h3>
+              <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-3 line-clamp-2">
+                {destino.subtitulo}
+              </p>
+              
+              {destino.avaliacao > 0 && (
+                <div class="flex items-center gap-2 mb-4">
+                  <div class="flex text-yellow-400">
+                    {Array.from({length: 5}, (_, i) => (
+                      <svg class={`w-4 h-4 ${i < Math.floor(destino.avaliacao) ? 'fill-current' : i < destino.avaliacao ? 'fill-current opacity-50' : 'text-neutral-300'}`} viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <span class="text-sm text-secondary-600 dark:text-neutral-400">
+                    {destino.avaliacao.toFixed(1)}
+                  </span>
+                </div>
+              )}
+              
+              <div class="space-y-2 mb-6 flex-1">
+                {destino.tags.map((tag) => (
+                  <div class="flex items-center text-sm text-secondary-600 dark:text-neutral-400">
+                    <svg class="w-4 h-4 text-primary-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                    {tag}
+                  </div>
+                ))}
+              </div>
+              
+              <div class="border-t border-neutral-200 dark:border-secondary-700 pt-4 mt-auto">
+                <div class="flex items-center justify-between mb-4">
+                  <div>
+                    <p class="text-sm text-secondary-500 dark:text-neutral-400">A partir de</p>
+                    <p class="text-2xl font-bold text-secondary-900 dark:text-neutral-100">
+                      {`R$ ${destino.preco.toFixed(2).replace('.', ',')}`}
+                    </p>
+                  </div>
+                </div>
+                <a 
+                  href={`/${destino.slug}`}
+                  class="w-full bg-secondary-500 hover:bg-secondary-600 text-primary-900 font-bold py-3 px-4 rounded-lg transition-colors duration-200 block text-center uppercase tracking-wide shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                >
+                  SAIBA MAIS
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Controles de navegação -->
+    <button 
+      id="prev-btn-destinos"
+      class="absolute left-4 top-1/2 -translate-y-1/2 bg-neutral-50 dark:bg-secondary-800 shadow-lg rounded-full p-3 hover:bg-neutral-100 dark:hover:bg-secondary-700 transition-colors z-10 hidden sm:block opacity-70 hover:opacity-100"
+      aria-label="Anterior"
+    >
+      <svg class="w-6 h-6 text-secondary-600 dark:text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+    
+    <button 
+      id="next-btn-destinos"
+      class="absolute right-4 top-1/2 -translate-y-1/2 bg-neutral-50 dark:bg-secondary-800 shadow-lg rounded-full p-3 hover:bg-neutral-100 dark:hover:bg-secondary-700 transition-colors z-10 hidden sm:block opacity-70 hover:opacity-100"
+      aria-label="Próximo"
+    >
+      <svg class="w-6 h-6 text-secondary-600 dark:text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+  </div>
+</section>
+
+<script>
+  function initCarousel() {
+    const wrapper = document.getElementById('carousel-wrapper-destinos');
+    const container = document.getElementById('carousel-container-destinos');
+    const prevBtn = document.getElementById('prev-btn-destinos');
+    const nextBtn = document.getElementById('next-btn-destinos');
+    
+    if (!wrapper || !prevBtn || !nextBtn || !container) return;
+
+    // Mouse Drag Logic
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    wrapper.addEventListener('mousedown', (e) => {
+      isDown = true;
+      wrapper.classList.add('cursor-grabbing');
+      wrapper.classList.remove('cursor-grab');
+      // Disable snap while dragging for smoother feel
+      wrapper.style.scrollSnapType = 'none';
+      startX = e.pageX - wrapper.offsetLeft;
+      scrollLeft = wrapper.scrollLeft;
+    });
+
+    wrapper.addEventListener('mouseleave', () => {
+      isDown = false;
+      wrapper.classList.remove('cursor-grabbing');
+      wrapper.style.scrollSnapType = ''; // Re-enable snap
+    });
+
+    wrapper.addEventListener('mouseup', () => {
+      isDown = false;
+      wrapper.classList.remove('cursor-grabbing');
+      wrapper.style.scrollSnapType = ''; // Re-enable snap
+    });
+
+    wrapper.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - wrapper.offsetLeft;
+      const walk = (x - startX) * 2; // Scroll-fast
+      wrapper.scrollLeft = scrollLeft - walk;
+    });
+
+    // Navigation Buttons Logic
+    const getScrollAmount = () => {
+      // Scroll by one card width (approximate based on first card)
+      const card = container.children[0];
+      return card ? card.clientWidth + 16 : 300; // 16px gap
+    };
+
+    const newPrevBtn = prevBtn.cloneNode(true);
+    const newNextBtn = nextBtn.cloneNode(true);
+    prevBtn.parentNode.replaceChild(newPrevBtn, prevBtn);
+    nextBtn.parentNode.replaceChild(newNextBtn, nextBtn);
+
+    newPrevBtn.addEventListener('click', () => {
+      wrapper.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+    });
+
+    newNextBtn.addEventListener('click', () => {
+      wrapper.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+    });
+    
+    // Initial cursor style
+    wrapper.classList.add('cursor-grab');
+  }
+
+  document.addEventListener('DOMContentLoaded', initCarousel);
+  document.addEventListener('astro:page-load', initCarousel);
+</script>
