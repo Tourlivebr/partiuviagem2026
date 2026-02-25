@@ -5,9 +5,10 @@ import { getCollection } from 'astro:content';
 const allDestinos = await getCollection('destinos');
 // Filter more broadly to ensure we catch files in subdirectories
 const destinosInternacionais = allDestinos.filter(destino => 
-  destino.id.includes('internacionais/') || 
+  (destino.id.includes('internacionais/') || 
   destino.slug.includes('internacionais/') ||
-  (destino.collection === 'destinos' && destino.id.includes('internacionais'))
+  (destino.collection === 'destinos' && destino.id.includes('internacionais'))) &&
+  destino.data.showInCarousel
 );
 
 console.log(`Found ${destinosInternacionais.length} international destinations`);
@@ -22,6 +23,7 @@ const destinos = destinosInternacionais.map(destino => ({
   avaliacao: destino.data.rating || 5.0,
   totalAvaliacoes: destino.data.reviewCount || 0,
   preco: destino.data.price || 0,
+  data: destino.data.dateRange || (destino.data.tripDates && destino.data.tripDates[0]) || "Consulte",
   slug: `destinos/internacionais/${destino.slug.replace(/^internacionais\//, '')}`,
   tags: [
     destino.data.location || "Mundo",
@@ -86,6 +88,13 @@ const destinos = destinosInternacionais.map(destino => ({
                   </span>
                 </div>
               )}
+              
+              <div class="flex items-center text-sm text-secondary-600 dark:text-neutral-400 mb-4 font-semibold">
+                <svg class="w-4 h-4 text-primary-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                {destino.data}
+              </div>
               
               <div class="space-y-2 mb-6 flex-1">
                 {destino.tags.map((tag) => (

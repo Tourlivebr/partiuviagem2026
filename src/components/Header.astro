@@ -1,5 +1,26 @@
 ---
-// Remover todo o array todosPasseios daqui - agora será definido no JavaScript
+import { getCollection } from 'astro:content';
+
+// Buscar todos os destinos para a busca
+const allDestinos = await getCollection('destinos');
+
+const destinosSearch = allDestinos.map(destino => {
+  const isInternational = 
+    destino.id.includes('internacionais/') || 
+    destino.slug.includes('internacionais/') ||
+    (destino.collection === 'destinos' && destino.id.includes('internacionais'));
+    
+  return {
+    id: destino.id,
+    titulo: destino.data.title,
+    subtitulo: destino.data.description,
+    categoria: isInternational ? "DESTINOS INTERNACIONAIS" : "DESTINOS NACIONAIS",
+    tipo: "destino", // Diferenciar de passeios/descontos
+    slug: isInternational 
+      ? `destinos/internacionais/${destino.slug.replace(/^internacionais\//, '')}`
+      : `destinos/nacionais/${destino.slug.replace(/^nacionais\//, '')}`
+  };
+});
 ---
 
 <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white dark:bg-neutral-900 border-b border-neutral-200/30 dark:border-neutral-700/30 group group-[.scrolled]:bg-white/80 group-[.scrolled]:dark:bg-neutral-900/80 group-[.scrolled]:backdrop-blur-md">
@@ -217,9 +238,9 @@
   </div>
 </header>
 
-<script>
-  // Dados dos passeios para busca (agora definido diretamente no JavaScript)
-  const todosPasseios = [
+<script define:vars={{ destinosSearch }}>
+  // Dados dos passeios para busca
+  const manualPasseios = [
     // Passeios e Receptivo - apenas os 3 da imagem
     {
       id: 5,
@@ -246,6 +267,8 @@
       slug: "ensaio-fotografico-gramado-canela"
     }
   ];
+
+  const todosPasseios = [...manualPasseios, ...destinosSearch];
 
   // Header scroll behavior
   const header = document.getElementById('header');
